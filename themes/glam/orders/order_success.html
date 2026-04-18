@@ -1,0 +1,366 @@
+{% extends 'base.html' %}
+
+{% block title %}Order Confirmation - Elegant Jewellery{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-rose-50 via-white to-champagne-50 py-20">
+
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Header -->
+        <div class="text-center mb-16">
+
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-emerald-500/10 rounded-full mb-6">
+                <svg class="w-10 h-10 text-emerald-600"
+                     fill="none"
+                     stroke="currentColor"
+                     viewBox="0 0 24 24">
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2.5"
+                          d="M5 13l4 4L19 7"/>
+                </svg>
+            </div>
+
+            <h1 class="text-4xl lg:text-5xl font-serif font-semibold text-gray-900 mb-4 tracking-tight">
+                Order Confirmed
+            </h1>
+
+            <p class="text-lg text-gray-600 font-elegant max-w-2xl mx-auto">
+                Your order has been successfully placed and is being carefully prepared.
+            </p>
+
+        </div>
+
+        <!-- Card -->
+        <div class="bg-white shadow-xl p-10 border border-gray-200">
+
+            <h2 class="text-2xl font-serif font-semibold text-gray-900 mb-10 border-b border-gray-200 pb-4">
+                Order Details
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10">
+
+                <div class="space-y-6">
+
+                    <div class="flex justify-between text-base">
+                        <span class="text-gray-500">
+                            Order Number
+                        </span>
+                        <span class="text-gray-900 font-medium">
+                            #{{ order.order_number }}
+                        </span>
+                    </div>
+
+                    <div class="flex justify-between text-base">
+                        <span class="text-gray-500">
+                            Order Date
+                        </span>
+                        <span class="text-gray-900 font-medium">
+                            {{ order.created_at|date:"F d, Y" }}
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="space-y-6">
+
+                    <div class="flex justify-between text-base">
+                        <span class="text-gray-500">
+                            Status
+                        </span>
+                        <span class="px-3 py-1 bg-rose-100 text-rose-700 text-sm rounded-full font-medium">
+                            {{ order.get_status_display }}
+                        </span>
+                    </div>
+
+                    <div class="flex justify-between text-base">
+                        <span class="text-gray-500">
+                            Payment Method
+                        </span>
+                        <span class="text-gray-900 font-medium">
+                            {{ order.get_payment_method_display }}
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Total -->
+            <div class="border-t border-gray-200 pt-8 text-center">
+
+                <p class="text-sm text-gray-500 uppercase tracking-widest mb-2">
+                    Total Amount
+                </p>
+
+                <p class="text-3xl font-serif font-semibold text-gray-900">
+                    {{ CURRENCY_SYMBOL }}{{ order.total_amount }}
+                </p>
+
+                {% if order.payment_method == 'cod' %}
+                <div class="mt-6 bg-amber-50 border border-amber-200 p-5 text-left space-y-3">
+                    <p class="text-sm font-serif text-amber-900 font-semibold">Cash on Delivery — Payment Breakdown</p>
+                    <div class="flex justify-between text-sm font-elegant">
+                        <span class="text-amber-800">Advance paid now</span>
+                        <span class="text-green-700 font-semibold">{{ CURRENCY_SYMBOL }}{{ order.cod_advance }} ✓ Paid</span>
+                    </div>
+                    <div class="flex justify-between text-sm font-elegant border-t border-amber-200 pt-3">
+                        <span class="text-amber-800">Pay on delivery</span>
+                        <span class="text-amber-900 font-semibold">{{ CURRENCY_SYMBOL }}{{ order.cod_balance }}</span>
+                    </div>
+                    <p class="text-xs text-amber-700 font-elegant">Please keep {{ CURRENCY_SYMBOL }}{{ order.cod_balance }} ready for the delivery agent.</p>
+                </div>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+   
+            <!-- Shipping Address -->
+           <!-- Shipping Address -->
+<div class="mt-16 bg-white shadow-xl p-10 border border-gray-200">
+
+    <h3 class="text-2xl font-serif font-semibold text-gray-900 mb-8 pb-4 border-b border-gray-200 tracking-tight">
+        Shipping Address
+    </h3>
+
+    <div class="bg-gray-50 border-l-4 border-primary-600 p-8">
+
+        <div class="space-y-3 text-gray-700 font-elegant">
+
+            <p class="font-serif font-semibold text-lg text-gray-900">
+                {{ order.shipping_name }}
+            </p>
+
+            <p>
+                {{ order.shipping_address_line_1 }}
+            </p>
+
+            {% if order.shipping_address_line_2 %}
+                <p>
+                    {{ order.shipping_address_line_2 }}
+                </p>
+            {% endif %}
+
+            <p>
+                {{ order.shipping_city }}, {{ order.shipping_state }} {{ order.shipping_postal_code }}
+            </p>
+
+            <p>
+                {{ order.shipping_country }}
+            </p>
+
+            <div class="pt-4 border-t border-gray-200 mt-4">
+                <span class="text-sm uppercase tracking-widest text-gray-500">
+                    Phone
+                </span>
+                <p class="font-medium text-gray-900">
+                    {{ order.phone }}
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+            <!-- Order Items -->
+<div class="mt-16 bg-white shadow-xl p-10 border border-gray-200">
+
+    <h3 class="text-2xl font-serif font-semibold text-gray-900 mb-8 pb-4 border-b border-gray-200 tracking-tight">
+        Order Items
+    </h3>
+
+    <div class="space-y-6">
+
+        {% for item in order.items.all %}
+
+        <div class="py-6 border-b border-gray-200 last:border-b-0">
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-center">
+
+                <!-- Product Info -->
+                <div class="md:col-span-2">
+                    <h4 class="text-lg font-serif font-medium text-gray-900">
+                        {{ item.product_name }}
+                    </h4>
+
+                    {% if item.variant_name and item.variant_value %}
+                        <p class="text-sm text-gray-600 mt-1">
+                            {{ item.variant_name }}: 
+                            <span class="font-medium text-gray-800">
+                                {{ item.variant_value }}
+                            </span>
+                        </p>
+                    {% endif %}
+
+                    {% if item.product_sku %}
+                        <p class="text-xs text-gray-400 mt-1 tracking-wider uppercase">
+                            SKU: {{ item.product_sku }}
+                        </p>
+                    {% endif %}
+                </div>
+
+                <!-- Quantity -->
+                <div class="text-left md:text-center">
+                    <p class="text-xs uppercase tracking-widest text-gray-500 mb-1">
+                        Quantity
+                    </p>
+                    <p class="font-medium text-gray-900">
+                        {{ item.quantity }}
+                    </p>
+                </div>
+
+                <!-- Unit Price -->
+                <div class="text-left md:text-center">
+                    <p class="text-xs uppercase tracking-widest text-gray-500 mb-1">
+                        Unit Price
+                    </p>
+                    <p class="font-medium text-gray-900">
+                        {{ CURRENCY_SYMBOL }}{{ item.unit_price }}
+                    </p>
+                </div>
+
+                <!-- Total -->
+                <div class="text-left md:text-right">
+                    <p class="text-xs uppercase tracking-widest text-gray-500 mb-1">
+                        Total
+                    </p>
+                    <p class="text-lg font-serif font-semibold text-primary-600">
+                        {{ CURRENCY_SYMBOL }}{{ item.get_total_price }}
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+               <!-- Order Summary -->
+<div class="mt-10 bg-white border border-gray-200 shadow-lg p-8">
+
+    <h4 class="text-xl font-serif font-semibold text-gray-900 mb-6 pb-4 border-b border-gray-200 tracking-tight">
+        Order Summary
+    </h4>
+
+    <div class="space-y-5 text-sm">
+
+        <div class="flex justify-between items-center">
+            <span class="uppercase tracking-wider text-gray-500">
+                Subtotal
+            </span>
+            <span class="font-medium text-gray-900">
+                {{ CURRENCY_SYMBOL }}{{ order.subtotal }}
+            </span>
+        </div>
+
+        <div class="flex justify-between items-center">
+            <span class="uppercase tracking-wider text-gray-500">
+                Tax (GST)
+            </span>
+            <span class="font-medium text-gray-900">
+                {{ CURRENCY_SYMBOL }}{{ order.tax_amount }}
+            </span>
+        </div>
+
+        <div class="flex justify-between items-center">
+            <span class="uppercase tracking-wider text-gray-500">
+                Shipping
+            </span>
+            <span class="font-medium text-gray-900">
+                {{ CURRENCY_SYMBOL }}{{ order.shipping_cost }}
+            </span>
+        </div>
+
+        <div class="border-t border-gray-300 pt-6 mt-6">
+            <div class="flex justify-between items-center">
+                <span class="text-lg font-serif font-semibold text-gray-900 tracking-tight">
+                    Total
+                </span>
+                <span class="text-2xl font-serif font-semibold text-primary-600">
+                    {{ CURRENCY_SYMBOL }}{{ order.total_amount }}
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+            <!-- Action Buttons -->
+<div class="mt-14 mb-16 text-center">
+
+    <div class="flex flex-col sm:flex-row justify-center gap-6">
+
+        <a href="{% url 'orders:order_detail' order.order_number %}"
+           class="px-10 py-4 border border-gray-900 text-gray-900 font-serif font-medium tracking-wide uppercase text-sm hover:bg-gray-900 hover:text-white transition-all duration-300">
+            View Order Details
+        </a>
+
+        <a href="{% url 'catalog:product_list' %}"
+           class="px-10 py-4 bg-gray-900 text-white font-serif font-medium tracking-wide uppercase text-sm hover:bg-black transition-all duration-300">
+            Continue Shopping
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- What's Next -->
+<div class="mt-10 border-t border-gray-200 pt-12">
+
+    <h3 class="text-2xl font-serif font-semibold text-gray-900 text-center mb-10 tracking-tight">
+        What Happens Next
+    </h3>
+
+    <div class="grid md:grid-cols-2 gap-10 max-w-4xl mx-auto text-sm text-gray-700">
+
+        <div class="space-y-6">
+
+            <div class="flex items-start gap-4">
+                <div class="w-5 h-5 mt-1 border border-gray-900 flex items-center justify-center text-xs font-semibold">
+                    1
+                </div>
+                <p>You will receive an order confirmation email shortly.</p>
+            </div>
+
+            <div class="flex items-start gap-4">
+                <div class="w-5 h-5 mt-1 border border-gray-900 flex items-center justify-center text-xs font-semibold">
+                    2
+                </div>
+                <p>We carefully process and prepare your order within 24 hours.</p>
+            </div>
+
+        </div>
+
+        <div class="space-y-6">
+
+            <div class="flex items-start gap-4">
+                <div class="w-5 h-5 mt-1 border border-gray-900 flex items-center justify-center text-xs font-semibold">
+                    3
+                </div>
+                <p>Track your order anytime from your account dashboard.</p>
+            </div>
+
+            <div class="flex items-start gap-4">
+                <div class="w-5 h-5 mt-1 border border-gray-900 flex items-center justify-center text-xs font-semibold">
+                    4
+                </div>
+                <p>For Cash on Delivery, payment will be collected at delivery.</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

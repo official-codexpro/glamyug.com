@@ -1,0 +1,611 @@
+{% extends "base.html" %}
+
+{% block title %}My Glam Profile - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-white py-16 lg:py-64">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Profile Header -->
+        <div class="border border-gray-200 mb-12">
+            <div class="px-8 py-12">
+
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-8">
+
+                    <!-- Left: Identity -->
+                    <div class="flex items-center gap-6">
+                        <div class="w-20 h-20 flex items-center justify-center border border-gray-200 rounded-full">
+                            <svg class="w-8 h-8 text-primary-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+
+                        <div>
+                            <h1 class="text-3xl sm:text-4xl font-serif text-gray-900">
+                                {{ user.get_full_name|default:user.username }}
+                            </h1>
+                            <p class="mt-1 text-gray-600 font-elegant text-lg">
+                                {{ user.email }}
+                            </p>
+                            <p class="mt-2 text-sm text-gray-500 font-elegant">
+                                Member since {% if user.date_joined %}{{ user.date_joined|date:"F Y" }}{% endif %}
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-14">
+
+    <!-- Profile Information -->
+    <div class="lg:col-span-2 space-y-14">
+
+        <!-- Personal Information -->
+        <div class="border border-gray-200 p-10">
+            
+            <h2 class="text-2xl font-serif text-gray-900 mb-10">
+                Personal Information
+            </h2>
+
+            {% if user_form %}
+           <form method="post" class="space-y-8 border-b border-gray-200 pb-10 mb-10">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="update_personal_info">
+
+    <h3 class="text-lg font-serif text-gray-900 mb-6">
+        Basic Information
+    </h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <!-- First Name -->
+        <div>
+            <label for="{{ user_form.first_name.id_for_label }}"
+                   class="block text-sm font-serif text-gray-800 mb-2">
+                First Name
+            </label>
+            <input type="text"
+                   name="{{ user_form.first_name.name }}"
+                   id="{{ user_form.first_name.id_for_label }}"
+                   value="{{ user_form.first_name.value|default_if_none:'' }}"
+                   class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-primary-500 focus:ring-0 outline-none transition-all duration-300 font-elegant text-gray-800 placeholder-gray-400">
+
+            {% if user_form.first_name.errors %}
+                <div class="mt-2">
+                    {% for error in user_form.first_name.errors %}
+                        <p class="text-sm text-red-600 font-elegant">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Last Name -->
+        <div>
+            <label for="{{ user_form.last_name.id_for_label }}"
+                   class="block text-sm font-serif text-gray-800 mb-2">
+                Last Name
+            </label>
+            <input type="text"
+                   name="{{ user_form.last_name.name }}"
+                   id="{{ user_form.last_name.id_for_label }}"
+                   value="{{ user_form.last_name.value|default_if_none:'' }}"
+                   class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-primary-500 focus:ring-0 outline-none transition-all duration-300 font-elegant text-gray-800 placeholder-gray-400">
+
+            {% if user_form.last_name.errors %}
+                <div class="mt-2">
+                    {% for error in user_form.last_name.errors %}
+                        <p class="text-sm text-red-600 font-elegant">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <!-- Email -->
+    <div>
+        <label for="{{ user_form.email.id_for_label }}"
+               class="block text-sm font-serif text-gray-800 mb-2">
+            Email Address
+        </label>
+        <input type="email"
+               name="{{ user_form.email.name }}"
+               id="{{ user_form.email.id_for_label }}"
+               value="{{ user_form.email.value|default_if_none:'' }}"
+               class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-primary-500 focus:ring-0 outline-none transition-all duration-300 font-elegant text-gray-800 placeholder-gray-400">
+
+        {% if user_form.email.errors %}
+            <div class="mt-2">
+                {% for error in user_form.email.errors %}
+                    <p class="text-sm text-red-600 font-elegant">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Submit -->
+    <button type="submit"
+            class="w-full sm:w-auto bg-primary-500 text-white px-8 py-2.5 uppercase tracking-[0.2em] font-sans font-semibold hover:bg-black transition-all duration-300">
+        Update Information
+    </button>
+
+</form>
+            {% endif %}
+                    <!-- Profile Details Form -->
+                    {% if profile_form %}
+                   <form method="post" class="space-y-8">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="update_profile">
+
+    <!-- Section Title -->
+    <h3 class="text-lg font-serif text-gray-900 mb-6">
+        Additional Details
+    </h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <!-- Phone Number -->
+        <div>
+            <label for="{{ profile_form.phone.id_for_label }}"
+                   class="block text-sm font-serif text-gray-800 mb-2">
+                Phone Number
+            </label>
+
+            <input type="text"
+                   name="{{ profile_form.phone.name }}"
+                   id="{{ profile_form.phone.id_for_label }}"
+                   value="{{ profile_form.phone.value|default_if_none:'' }}"
+                   placeholder="Enter your phone number"
+                   class="w-full px-4 py-3 border border-gray-200 rounded-lg 
+                          focus:border-primary-500 focus:ring-0 
+                          outline-none transition-all duration-300 
+                          font-elegant text-gray-800 placeholder-gray-400">
+
+            {% if profile_form.phone.errors %}
+                <div class="mt-2">
+                    {% for error in profile_form.phone.errors %}
+                        <p class="text-sm text-red-600 font-elegant">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Date of Birth -->
+        <div>
+            <label for="{{ profile_form.date_of_birth.id_for_label }}"
+                   class="block text-sm font-serif text-gray-800 mb-2">
+                Date of Birth
+            </label>
+
+            <input type="date"
+                   name="{{ profile_form.date_of_birth.name }}"
+                   id="{{ profile_form.date_of_birth.id_for_label }}"
+                   value="{{ profile_form.date_of_birth.value|default_if_none:'' }}"
+                   class="w-full px-4 py-3 border border-gray-200 rounded-lg 
+                          focus:border-primary-500 focus:ring-0 
+                          outline-none transition-all duration-300 
+                          font-elegant text-gray-800">
+
+            {% if profile_form.date_of_birth.errors %}
+                <div class="mt-2">
+                    {% for error in profile_form.date_of_birth.errors %}
+                        <p class="text-sm text-red-600 font-elegant">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <!-- Submit Button -->
+    <div class="pt-4">
+        <button type="submit"
+                class="w-full sm:w-auto 
+                       bg-primary-500 text-white 
+                       px-8 py-2.5 
+                       uppercase tracking-[0.2em] 
+                       font-sans font-semibold 
+                       hover:bg-black 
+                       transition-all duration-300">
+            Update Profile
+        </button>
+    </div>
+
+</form>
+{% endif %}
+</div>
+                <!-- Elegant Addresses Section -->
+                <div class="border border-gray-200 p-10">
+
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-10">
+        <h2 class="text-2xl font-serif text-gray-900">
+            Delivery Addresses
+        </h2>
+
+        <button onclick="toggleAddAddress()"
+                class="bg-primary-500 text-white px-6 py-2.5 uppercase tracking-[0.2em] font-sans font-semibold hover:bg-black transition-all duration-300">
+            Add Address
+        </button>
+    </div>
+
+    <!-- Add Address Form -->
+    <div id="add-address-form" class="hidden border border-gray-200 p-8 mb-10">
+        <h3 class="text-lg font-serif text-gray-900 mb-8">
+            Add New Address
+        </h3>
+
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="add_address">
+
+            {% if address_form %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <div>
+                    <label class="block text-sm font-serif text-gray-800 mb-2">
+                        Address Type
+                    </label>
+                    {{ address_form.type }}
+                </div>
+
+                <div>
+                    <label class="block text-sm font-serif text-gray-800 mb-2">
+                        Full Name
+                    </label>
+                    {{ address_form.name }}
+                </div>
+
+            </div>
+
+            <div>
+                <label class="block text-sm font-serif text-gray-800 mb-2">
+                    Street Address
+                </label>
+                {{ address_form.street }}
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <div>
+                    <label class="block text-sm font-serif text-gray-800 mb-2">
+                        City
+                    </label>
+                    {{ address_form.city }}
+                </div>
+
+                <div>
+                    <label class="block text-sm font-serif text-gray-800 mb-2">
+                        State / Province
+                    </label>
+                    {{ address_form.state }}
+                </div>
+
+                <div>
+                    <label class="block text-sm font-serif text-gray-800 mb-2">
+                        Postal Code
+                    </label>
+                    {{ address_form.postal_code }}
+                </div>
+
+            </div>
+
+            <div>
+                <label class="block text-sm font-serif text-gray-800 mb-2">
+                    Country
+                </label>
+                {{ address_form.country }}
+            </div>
+
+            <div class="flex items-center gap-3 text-sm">
+                {{ address_form.is_default }}
+                <label class="text-gray-700 font-elegant">
+                    Set as preferred delivery address
+                </label>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                <button type="submit"
+                        class="bg-primary-500 text-white px-8 py-2.5 uppercase tracking-[0.2em] font-sans font-semibold hover:bg-black transition-all duration-300">
+                    Save Address
+                </button>
+
+                <button type="button"
+                        onclick="toggleAddAddress()"
+                        class="border border-gray-300 px-8 py-2.5 font-sans font-semibold uppercase tracking-[0.2em] hover:border-black hover:text-black transition-all duration-300">
+                    Cancel
+                </button>
+            </div>
+
+            {% endif %}
+        </form>
+    </div>
+
+                   <!-- Address List -->
+<div class="space-y-6">
+
+    {% for address in addresses %}
+    <div class="border border-gray-200 p-8">
+
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-6">
+
+            <div class="flex-1">
+
+                <div class="flex flex-wrap items-center gap-4 mb-4">
+                    <h3 class="text-lg font-serif text-gray-900">
+                        {{ address.name }}
+                    </h3>
+
+                    <span class="text-xs uppercase tracking-[0.2em] text-gray-500 font-sans">
+                        {{ address.get_type_display }}
+                    </span>
+
+                    {% if address.is_default %}
+                    <span class="text-xs uppercase tracking-[0.2em] text-primary-500 font-sans">
+                        Preferred
+                    </span>
+                    {% endif %}
+                </div>
+
+                <div class="text-sm text-gray-600 font-elegant leading-relaxed space-y-1">
+                    <p>{{ address.street }}</p>
+                    <p>{{ address.city }}, {{ address.state }} {{ address.postal_code }}</p>
+                    <p class="text-gray-800 font-medium">{{ address.country }}</p>
+                </div>
+
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="delete_address">
+                <input type="hidden" name="address_id" value="{{ address.id }}">
+
+                <button type="submit"
+                        onclick="return confirm('Are you sure you want to remove this address?')"
+                        class="text-sm uppercase tracking-[0.2em] text-red-500 font-sans hover:text-black transition-all duration-300">
+                    Remove
+                </button>
+            </form>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+    <div class="border border-gray-200 p-12 text-center">
+
+        <h3 class="text-lg font-serif text-gray-900 mb-4">
+            No Addresses Added
+        </h3>
+
+        <p class="text-gray-600 font-elegant mb-8">
+            Add your first delivery address to streamline your shopping experience.
+        </p>
+
+        <button onclick="toggleAddAddress()"
+                class="bg-primary-500 text-white px-8 py-2.5 uppercase tracking-[0.2em] font-sans font-semibold hover:bg-black transition-all duration-300">
+            Add Address
+        </button>
+
+    </div>
+    {% endfor %}
+
+</div>
+</div>
+</div>
+         <!-- Sidebar -->
+<div class="space-y-10">
+
+    <!-- Quick Actions -->
+    <div class="border border-gray-200 p-8">
+
+        <h3 class="text-xl font-serif text-gray-900 mb-8">
+            Quick Actions
+        </h3>
+
+        <div class="space-y-6">
+
+            <a href="#" class="flex items-center justify-between border-b border-gray-200 pb-4 group">
+                <span class="font-serif text-gray-900">
+                    View Orders
+                </span>
+                <span class="text-xs uppercase tracking-[0.2em] text-primary-500 font-sans group-hover:text-black transition-all duration-300">
+                    Open
+                </span>
+            </a>
+
+            <a href="#" class="flex items-center justify-between border-b border-gray-200 pb-4 group">
+                <span class="font-serif text-gray-900">
+                    Payment Methods
+                </span>
+                <span class="text-xs uppercase tracking-[0.2em] text-primary-500 font-sans group-hover:text-black transition-all duration-300">
+                    Manage
+                </span>
+            </a>
+
+            <a href="#" class="flex items-center justify-between border-b border-gray-200 pb-4 group">
+                <span class="font-serif text-gray-900">
+                    Wishlist
+                </span>
+                <span class="text-xs uppercase tracking-[0.2em] text-primary-500 font-sans group-hover:text-black transition-all duration-300">
+                    View
+                </span>
+            </a>
+
+            <a href="#" class="flex items-center justify-between group">
+                <span class="font-serif text-gray-900">
+                    Concierge Support
+                </span>
+                <span class="text-xs uppercase tracking-[0.2em] text-primary-500 font-sans group-hover:text-black transition-all duration-300">
+                    Contact
+                </span>
+            </a>
+
+        </div>
+
+    </div>
+               <!-- Account Overview -->
+<div class="border border-gray-200 p-8">
+
+    <h3 class="text-xl font-serif text-gray-900 mb-8">
+        Account Overview
+    </h3>
+
+    <div class="space-y-6">
+
+        <div class="flex justify-between items-center border-b border-gray-200 pb-4">
+            <span class="text-sm font-elegant text-gray-600">
+                Total Orders
+            </span>
+            <span class="text-lg font-serif text-gray-900">
+                0
+            </span>
+        </div>
+
+        <div class="flex justify-between items-center border-b border-gray-200 pb-4">
+            <span class="text-sm font-elegant text-gray-600">
+                Saved Addresses
+            </span>
+            <span class="text-lg font-serif text-gray-900">
+                {{ addresses.count }}
+            </span>
+        </div>
+
+        <div class="flex justify-between items-center border-b border-gray-200 pb-4">
+            <span class="text-sm font-elegant text-gray-600">
+                Membership Status
+            </span>
+            <span class="text-xs uppercase tracking-[0.2em] font-sans text-primary-500">
+                Elite Active
+            </span>
+        </div>
+
+        <div class="flex justify-between items-center">
+            <span class="text-sm font-elegant text-gray-600">
+                VIP Benefits
+            </span>
+            <span class="text-xs uppercase tracking-[0.2em] font-sans text-primary-500">
+                Unlocked
+            </span>
+        </div>
+
+    </div>
+
+</div>
+                <!-- Member Benefits -->
+               <div class="border border-gray-200 p-8">
+
+    <h3 class="text-lg font-serif text-gray-900 mb-8 text-center">
+        Your Elite Benefits
+    </h3>
+
+    <div class="space-y-5 max-w-sm mx-auto">
+
+        <div class="flex items-start">
+            <svg class="w-4 h-4 text-primary-500 mt-1 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+            <p class="text-sm font-elegant text-gray-700 leading-relaxed">
+                Complimentary worldwide shipping
+            </p>
+        </div>
+
+        <div class="flex items-start">
+            <svg class="w-4 h-4 text-primary-500 mt-1 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+            <p class="text-sm font-elegant text-gray-700 leading-relaxed">
+                Priority client support
+            </p>
+        </div>
+
+        <div class="flex items-start">
+            <svg class="w-4 h-4 text-primary-500 mt-1 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+            <p class="text-sm font-elegant text-gray-700 leading-relaxed">
+                Early access to new collections
+            </p>
+        </div>
+
+        <div class="flex items-start">
+            <svg class="w-4 h-4 text-primary-500 mt-1 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+            <p class="text-sm font-elegant text-gray-700 leading-relaxed">
+                Complimentary Jewellery care services
+            </p>
+        </div>
+
+    </div>
+
+</div>
+</div>
+</div>
+</div>
+
+<script>
+function toggleAddAddress() {
+    const form = document.getElementById('add-address-form');
+    form.classList.toggle('hidden');
+
+    // Add smooth transition effect
+    if (!form.classList.contains('hidden')) {
+        form.style.opacity = '0';
+        form.style.transform = 'translateY(-20px)';
+        setTimeout(() => {
+            form.style.transition = 'all 0.3s ease';
+            form.style.opacity = '1';
+            form.style.transform = 'translateY(0)';
+        }, 10);
+    }
+}
+
+// Add elegant animations to form fields
+document.addEventListener('DOMContentLoaded', function() {
+    const formFields = document.querySelectorAll('input[type="text"], input[type="email"], select, textarea');
+    formFields.forEach(field => {
+        field.addEventListener('focus', function() {
+            this.parentNode.classList.add('field-focused');
+        });
+
+        field.addEventListener('blur', function() {
+            this.parentNode.classList.remove('field-focused');
+        });
+    });
+
+    // Add hover effects to profile cards
+    const profileCards = document.querySelectorAll('.space-y-8 > div, .space-y-12 > div');
+    profileCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-4px)';
+        });
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+});
+</script>
+
+<style>
+.field-focused {
+    transform: translateY(-2px);
+    transition: transform 0.3s ease;
+}
+
+/* Custom styling for form elements */
+input, select, textarea {
+    transition: all 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+    transform: scale(1.02);
+}
+</style>
+{% endblock %}

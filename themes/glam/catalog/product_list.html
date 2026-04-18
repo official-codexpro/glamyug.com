@@ -1,0 +1,463 @@
+{% extends "base.html" %}
+
+{% block title %}{% if selected_category %}{{ selected_category.seo_title|default:selected_category.name }} - {{ SITE_NAME }}{% elif search_query %}Search: "{{ search_query }}" - {{ SITE_NAME }}{% else %}Collections - {{ SITE_NAME }}{% endif %}{% endblock %}
+{% block description %}{% if selected_category %}{{ selected_category.seo_description|default:selected_category.description|truncatechars:160 }}{% else %}{{ settings.seo_description|default:"Browse our complete luxury jewellery collection. Anklets, body chains, thigh chains and more." }}{% endif %}{% endblock %}
+{% block keywords %}{% if selected_category %}{{ selected_category.seo_keywords|default:selected_category.name }}{% else %}{{ settings.seo_keywords }}{% endif %}{% endblock %}
+{% block og_title %}{% if selected_category %}{{ selected_category.seo_title|default:selected_category.name }} - {{ SITE_NAME }}{% else %}Collections - {{ SITE_NAME }}{% endif %}{% endblock %}
+{% block og_description %}{% if selected_category %}{{ selected_category.seo_description|default:selected_category.description|truncatechars:160 }}{% else %}{{ settings.seo_description|default:"Browse our complete luxury jewellery collection." }}{% endif %}{% endblock %}
+{% block og_image %}{% if selected_category and selected_category.image %}{{ request.scheme }}://{{ request.get_host }}{{ selected_category.image.url }}{% elif settings.og_image %}{{ request.scheme }}://{{ request.get_host }}{{ settings.og_image.url }}{% endif %}{% endblock %}
+{% block twitter_title %}{% if selected_category %}{{ selected_category.seo_title|default:selected_category.name }} - {{ SITE_NAME }}{% else %}Collections - {{ SITE_NAME }}{% endif %}{% endblock %}
+{% block twitter_description %}{% if selected_category %}{{ selected_category.seo_description|default:selected_category.description|truncatechars:160 }}{% else %}{{ settings.seo_description|default:"Browse our complete luxury jewellery collection." }}{% endif %}{% endblock %}
+{% block twitter_image %}{% if selected_category and selected_category.image %}{{ request.scheme }}://{{ request.get_host }}{{ selected_category.image.url }}{% elif settings.og_image %}{{ request.scheme }}://{{ request.get_host }}{{ settings.og_image.url }}{% endif %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-rose-25 via-white to-champagne-25">
+
+{% if selected_category %}
+  {# ── Category banner ─────────────────────────────────────────── #}
+  {% if selected_category.banner_mode == 'html' %}
+    {{ selected_category.banner_html|safe }}
+  {% elif selected_category.banner_mode == 'image' and selected_category.banner_image %}
+  <div class="relative w-full overflow-hidden" style="max-height:600px;">
+    <img src="{{ selected_category.banner_image.url }}"
+         alt="{{ selected_category.name }}"
+         class="w-full object-cover"
+         style="max-height:600px;">
+    <!-- Subtle overlay with category name -->
+    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end pb-8 px-6 sm:px-12">
+      <h1 class="text-3xl sm:text-5xl font-serif font-bold text-white drop-shadow-lg">
+        {{ selected_category.name }}
+      </h1>
+    </div>
+  </div>
+  {% endif %}
+{% endif %}
+
+<!-- Page Header -->
+<div class="border-b border-gray-200 bg-white pt-32">
+
+    <div class="w-full max-w-[1440px] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
+
+        <!-- Top Row -->
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+
+            <!-- Left: Title -->
+            <div>
+
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-serif font-semibold text-gray-900 leading-tight">
+
+                    {% if selected_category %}
+                        <span class="text-gray-900">
+                            {{ selected_category.name }}
+                        </span>
+                    {% elif search_query %}
+                        <span class="text-gray-800">
+                            Search Results
+                        </span>
+                    {% else %}
+                        <span class="text-gray-900">
+                            All Collections
+                        </span>
+                    {% endif %}
+
+                </h1>
+
+                <p class="text-sm uppercase tracking-[0.25em] text-gray-500 mt-4">
+
+                    {% if search_query %}
+                        {{ total_products }} Result{{ total_products|pluralize }} for "{{ search_query }}"
+                    {% else %}
+                        {{ total_products }} Exceptional Piece{{ total_products|pluralize }}
+                    {% endif %}
+
+                </p>
+
+                <!-- Elegant underline -->
+                <div class="w-20 h-[1px] bg-gray-300 mt-6"></div>
+
+            </div>
+
+            <!-- Right: Search -->
+            <form method="GET" class="relative w-full lg:w-[340px]">
+
+                {% if selected_category %}
+                <input type="hidden" name="category" value="{{ selected_category.slug }}">
+                {% endif %}
+
+                <input type="search"
+                       name="search"
+                       value="{{ search_query }}"
+                       placeholder="Search pieces..."
+                       class="w-full
+                              px-5 py-3
+                              border border-gray-300
+                              focus:border-primary-500
+                              focus:ring-1 focus:ring-primary-500
+                              outline-none
+                              text-sm
+                              bg-white
+                              transition-all duration-300">
+
+                <button type="submit"
+                        class="absolute right-3 top-1/2 -translate-y-1/2
+                               text-gray-500 hover:text-primary-600
+                               transition duration-300">
+
+                    <svg class="w-5 h-5"
+                         fill="none"
+                         stroke="currentColor"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- Filter + Sort Bar -->
+        <div class="mt-10 flex flex-wrap items-center gap-3">
+
+            <!-- Category Pills -->
+            <a href="{% url 'catalog:product_list' %}{% if search_query %}?search={{ search_query }}{% endif %}"
+               class="px-4 py-2 text-xs uppercase tracking-[0.2em] transition-all duration-300
+                      {% if not selected_category %}
+                      bg-primary-500 text-white
+                      {% else %}
+                      border border-gray-300 text-gray-700 hover:border-primary-400 hover:text-primary-600
+                      {% endif %}">
+
+                All
+
+            </a>
+
+            {% for category in categories %}
+            <a href="{% url 'catalog:product_list' %}?category={{ category.slug }}{% if search_query %}&search={{ search_query }}{% endif %}"
+               class="px-4 py-2 text-xs uppercase tracking-[0.2em] transition-all duration-300
+                      {% if selected_category.slug == category.slug %}
+                      bg-primary-500 text-white
+                      {% else %}
+                      border border-gray-300 text-gray-700 hover:border-primary-400 hover:text-primary-600
+                      {% endif %}">
+
+                {{ category.name }}
+
+            </a>
+            {% endfor %}
+
+            <!-- Sort -->
+            <div class="ml-auto w-full sm:w-auto">
+
+                <form method="GET" id="sort-form">
+
+                    {% if search_query %}
+                    <input type="hidden" name="search" value="{{ search_query }}">
+                    {% endif %}
+
+                    {% if selected_category %}
+                    <input type="hidden" name="category" value="{{ selected_category.slug }}">
+                    {% endif %}
+
+                    <select name="sort"
+                            onchange="document.getElementById('sort-form').submit()"
+                            class="w-full sm:w-auto
+                                   px-4 py-2
+                                   border border-gray-300
+                                   text-xs uppercase tracking-[0.2em]
+                                   text-gray-700
+                                   focus:border-primary-500 focus:ring-1 focus:ring-primary-500
+                                   outline-none
+                                   bg-white cursor-pointer">
+
+                        <option value="newest" {% if current_sort == 'newest' %}selected{% endif %}>Newest</option>
+                        <option value="price" {% if current_sort == 'price' %}selected{% endif %}>Price: Low–High</option>
+                        <option value="-price" {% if current_sort == '-price' %}selected{% endif %}>Price: High–Low</option>
+                        <option value="name" {% if current_sort == 'name' %}selected{% endif %}>Name A–Z</option>
+                        <option value="featured" {% if current_sort == 'featured' %}selected{% endif %}>Featured</option>
+
+                    </select>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+    <!-- Products Grid — 4 columns -->
+    <div class="w-full max-w-[1440px] 2xl:max-w-[1700px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        {% if products %}
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+            {% for product in products %}
+        <article class="group flex flex-col
+               bg-[#f9f9f9]
+               border border-gray-200
+               hover:border-primary-300
+               transition-all duration-500
+               hover:-translate-y-1
+               overflow-hidden">
+
+    <!-- Image -->
+    <div class="relative overflow-hidden bg-white">
+
+        <a href="{% url 'catalog:product_detail' product.slug %}" class="block">
+
+            {% if product.image %}
+            <img src="{{ product.image.url }}"
+                 alt="{{ product.title }}"
+                 class="w-full aspect-square object-cover
+                        transition duration-700 ease-out
+                        group-hover:scale-[1.05]">
+            {% else %}
+            <div class="w-full aspect-square flex items-center justify-center bg-gray-100">
+                <svg class="w-10 h-10 text-primary-300"
+                     fill="currentColor"
+                     viewBox="0 0 24 24">
+                    <path d="M5 16L3 14l5.5-11h7L21 14l-2 2H5z"/>
+                </svg>
+            </div>
+            {% endif %}
+
+        </a>
+
+        <!-- Badge -->
+        <div class="absolute top-3 left-3">
+            {% if not product.is_in_stock %}
+            <span class="text-[10px] uppercase tracking-[0.15em]
+                         bg-gray-900 text-white px-3 py-1">
+                Sold Out
+            </span>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <!-- Content -->
+    <div class="flex flex-col flex-grow px-4 py-5">
+
+        <!-- Category -->
+        <p class="text-[10px] uppercase tracking-[0.25em]
+                  text-primary-500 mb-2 font-medium">
+            {{ product.category.name }}
+        </p>
+
+        <!-- Title -->
+        <h3 class="font-serif font-medium text-gray-900 text-sm leading-snug mb-4 line-clamp-2">
+            <a href="{% url 'catalog:product_detail' product.slug %}"
+               class="hover:text-primary-600 transition duration-300">
+                {{ product.title|truncatechars:45 }}
+            </a>
+        </h3>
+
+        <div class="flex-grow"></div>
+
+        <!-- Price -->
+        <div class="border-t border-gray-200 pt-4 mb-4">
+
+            {% if product.sale_price and product.sale_price < product.price %}
+            <div class="flex items-center gap-2">
+                <span class="font-serif font-semibold text-primary-600 text-base">
+                    {{ CURRENCY_SYMBOL }}{{ product.sale_price }}
+                </span>
+                <span class="text-xs text-gray-400 line-through">
+                    {{ CURRENCY_SYMBOL }}{{ product.price }}
+                </span>
+            </div>
+            {% else %}
+            <span class="font-serif font-semibold text-primary-600 text-base">
+                {{ CURRENCY_SYMBOL }}{{ product.price }}
+            </span>
+            {% endif %}
+
+        </div>
+
+        <!-- Buttons -->
+        {% if product.is_in_stock %}
+        <div class="flex gap-2">
+
+            <!-- Add -->
+            <form method="post"
+                  action="{% url 'catalog:cart_add' product.id %}"
+                  class="flex-1">
+                {% csrf_token %}
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit"
+                        class="w-full
+                               bg-primary-500
+                               text-white
+                               text-xs uppercase tracking-[0.18em]
+                               py-2
+                               hover:bg-primary-600
+                               transition-all duration-300">
+
+                    Add
+
+                </button>
+            </form>
+
+            <!-- Buy Now -->
+            <form method="post" action="{% url 'catalog:cart_add' product.id %}" class="flex-1">
+                {% csrf_token %}
+                <input type="hidden" name="quantity" value="1">
+                <input type="hidden" name="buy_now" value="1">
+                <button type="submit"
+                        class="w-full
+                               border border-gray-900
+                               text-gray-900
+                               text-xs uppercase tracking-[0.18em]
+                               py-2
+                               hover:bg-gray-900 hover:text-white
+                               transition-all duration-300">
+                    Buy
+                </button>
+            </form>
+
+        </div>
+        {% else %}
+        <button disabled
+                class="w-full bg-gray-100 text-gray-400
+                       text-xs uppercase tracking-[0.18em]
+                       py-2 cursor-not-allowed">
+
+            Unavailable
+
+        </button>
+        {% endif %}
+
+    </div>
+</article>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+       {% if products.has_other_pages %}
+<div class="mt-20 flex justify-center">
+
+    <nav class="flex items-center gap-3">
+
+        <!-- Previous -->
+        {% if products.has_previous %}
+        <a href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if selected_category %}category={{ selected_category.slug }}&{% endif %}{% if current_sort %}sort={{ current_sort }}&{% endif %}page={{ products.previous_page_number }}"
+           class="px-6 py-2.5
+                  border border-gray-300
+                  text-[11px] uppercase tracking-[0.25em]
+                  font-semibold
+                  text-gray-800
+                  bg-white
+                  transition-all duration-300
+                  hover:border-black hover:text-black
+                  hover:-translate-y-0.5">
+            Previous
+        </a>
+        {% endif %}
+
+        <!-- Numbers -->
+        {% for num in products.paginator.page_range %}
+            {% if products.number == num %}
+            <span class="px-5 py-2.5
+                         border border-black
+                         bg-black text-white
+                         text-[11px] uppercase tracking-[0.25em]
+                         font-semibold
+                         shadow-sm">
+                {{ num }}
+            </span>
+
+            {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+            <a href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if selected_category %}category={{ selected_category.slug }}&{% endif %}{% if current_sort %}sort={{ current_sort }}&{% endif %}page={{ num }}"
+               class="px-5 py-2.5
+                      border border-gray-200
+                      text-[11px] uppercase tracking-[0.25em]
+                      font-semibold
+                      text-gray-700
+                      bg-white
+                      transition-all duration-300
+                      hover:border-black hover:text-black
+                      hover:-translate-y-0.5">
+                {{ num }}
+            </a>
+            {% endif %}
+        {% endfor %}
+
+        <!-- Next -->
+        {% if products.has_next %}
+        <a href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if selected_category %}category={{ selected_category.slug }}&{% endif %}{% if current_sort %}sort={{ current_sort }}&{% endif %}page={{ products.next_page_number }}"
+           class="px-6 py-2.5
+                  border border-gray-300
+                  text-[11px] uppercase tracking-[0.25em]
+                  font-semibold
+                  text-gray-800
+                  bg-white
+                  transition-all duration-300
+                  hover:border-black hover:text-black
+                  hover:-translate-y-0.5">
+            Next
+        </a>
+        {% endif %}
+
+    </nav>
+
+</div>
+{% endif %}
+
+        {% else %}
+        <!-- No products found -->
+        <div class="text-center py-20">
+            <svg class="w-24 h-24 text-rose-200 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 16L3 14l5.5-11h7L21 14l-2 2H5z"/>
+            </svg>
+            <h3 class="text-2xl font-serif font-semibold text-gray-900 mb-3">No Jewellery Found</h3>
+            <p class="text-gray-500 mb-8 font-elegant max-w-md mx-auto">
+                {% if search_query %}We couldn't find any pieces matching "{{ search_query }}"{% else %}No Jewellery pieces available in this collection{% endif %}
+            </p>
+            <a href="{% url 'catalog:product_list' %}" class="inline-block bg-gradient-to-r from-primary-500 to-rose-600 text-white px-8 py-3 rounded-full font-serif font-semibold hover:from-primary-600 hover:to-rose-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                Browse All Collections
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    window.addToWishlist = async function(productId) {
+        try {
+            const response = await fetch('{% url "wishlist:add_to_wishlist" %}', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken')},
+                body: JSON.stringify({product_id: productId})
+            });
+            const data = await response.json();
+            if (data.success) {
+                const c = document.getElementById('wishlist-count');
+                if (c) c.textContent = data.wishlist_count;
+            }
+            showToast(data.message, data.success ? 'success' : 'error');
+        } catch(e) { showToast('Error adding to wishlist', 'error'); }
+    };
+
+    function getCookie(name) {
+        let v = null;
+        document.cookie && document.cookie.split(';').forEach(c => {
+            c = c.trim();
+            if (c.startsWith(name + '=')) v = decodeURIComponent(c.slice(name.length + 1));
+        });
+        return v;
+    }
+    function showToast(msg, type) {
+        const d = document.createElement('div');
+        d.className = `fixed top-24 right-4 z-50 px-4 py-3 rounded-lg shadow-lg text-white text-sm ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
+        d.textContent = msg;
+        document.body.appendChild(d);
+        setTimeout(() => d.remove(), 3000);
+    }
+});
+</script>
+
+{% endblock %}

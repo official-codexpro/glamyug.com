@@ -1,0 +1,551 @@
+{% extends "base.html" %}
+
+{% block title %}Order #{{ order.order_number }} - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-[#fafafa] py-16">
+    <div class="max-w-6xl mx-auto px-6">
+
+        <!-- Boxed Header -->
+        <div class="bg-white border border-gray-200 shadow-xl p-12 mb-14">
+
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+
+                <!-- Left -->
+                <div class="mb-8 lg:mb-0">
+
+                    <h1 class="text-4xl lg:text-5xl font-serif font-semibold text-gray-900 tracking-tight mb-6">
+                        Order #{{ order.order_number }}
+                    </h1>
+
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-6 text-sm tracking-wide">
+
+                        <div class="flex items-center text-gray-600">
+                            <svg class="w-4 h-4 mr-2 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1z"/>
+                            </svg>
+                            Placed on {{ order.created_at|date:"F d, Y • g:i A" }}
+                        </div>
+
+                        <span class="px-4 py-1.5 border border-gray-300 text-gray-800 uppercase text-xs tracking-wider font-medium">
+                            {{ order.get_status_display }}
+                        </span>
+
+                    </div>
+                </div>
+
+                <!-- Right -->
+                <div>
+                    <a href="{% url 'orders:order_history' %}"
+                       class="inline-flex items-center border border-gray-800 text-gray-900 px-8 py-3 uppercase tracking-wider text-sm font-medium hover:bg-gray-900 hover:text-white transition-all duration-300">
+
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 19l-7-7 7-7"/>
+                        </svg>
+
+                        Back to Orders
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-14">
+
+    <!-- Order Items -->
+    <div class="lg:col-span-2">
+
+        <div class="bg-white border border-gray-200 shadow-xl p-12">
+
+            <h3 class="text-2xl font-serif font-semibold text-gray-900 mb-10 tracking-tight border-b border-gray-200 pb-4">
+                Your Exquisite Pieces
+            </h3>
+
+            <div class="divide-y divide-gray-200">
+
+                {% for item in order.items.all %}
+
+                <div class="py-8">
+
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+
+                        <!-- Left Side -->
+                        <div class="flex items-start gap-6">
+
+                            <!-- Image -->
+                            <div class="w-24 h-24 border border-gray-200 overflow-hidden bg-gray-50 flex-shrink-0">
+                                {% if item.product and item.product.image %}
+                                    <img src="{{ item.product.image.url }}"
+                                         alt="{{ item.product_name }}"
+                                         class="w-full h-full object-cover">
+                                {% elif item.product and item.product.thumbnail %}
+                                    <img src="{{ item.product.thumbnail.url }}"
+                                         alt="{{ item.product_name }}"
+                                         class="w-full h-full object-cover">
+                                {% else %}
+                                    <div class="w-full h-full flex items-center justify-center text-gray-400">
+                                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M5 16L3 14l5.5-11h7L21 14l-2 2H5z"/>
+                                        </svg>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Details -->
+                            <div>
+                                <h4 class="text-lg font-serif font-medium text-gray-900 mb-2">
+                                    {{ item.product_name }}
+                                </h4>
+
+                                {% if item.product_sku %}
+                                    <p class="text-sm text-gray-500 tracking-wide">
+                                        SKU: {{ item.product_sku }}
+                                    </p>
+                                {% endif %}
+
+                                {% if item.variant_name and item.variant_value %}
+                                    <p class="text-sm text-gray-500">
+                                        {{ item.variant_name }}: {{ item.variant_value }}
+                                    </p>
+                                {% endif %}
+
+                                <p class="text-sm text-gray-600 mt-2">
+                                    Unit Price — {{ CURRENCY_SYMBOL }}{{ item.unit_price }}
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <!-- Right Side -->
+                        <div class="flex items-center gap-14 text-sm tracking-wide">
+
+                            <div class="text-center">
+                                <div class="text-gray-500 uppercase text-xs mb-1">Qty</div>
+                                <div class="font-serif text-gray-900 text-base">
+                                    {{ item.quantity }}
+                                </div>
+                            </div>
+
+                            <div class="text-right">
+                                <div class="text-gray-500 uppercase text-xs mb-1">Total</div>
+                                <div class="font-serif text-lg font-semibold text-gray-900">
+                                    {{ CURRENCY_SYMBOL }}{{ item.get_total_price }}
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+                    <!-- Order Totals -->
+                  <div class="mt-14 bg-white border border-gray-200 shadow-xl p-10">
+
+    <h4 class="text-xl font-serif font-semibold text-gray-900 mb-8 border-b border-gray-200 pb-4 tracking-tight">
+        Order Summary
+    </h4>
+
+    <div class="space-y-5 text-sm">
+
+        <div class="flex justify-between items-center">
+            <span class="text-gray-600 tracking-wide">
+                Subtotal ({{ order.get_total_items }} item{{ order.get_total_items|pluralize }})
+            </span>
+            <span class="font-serif text-gray-900">
+                {{ CURRENCY_SYMBOL }}{{ order.subtotal }}
+            </span>
+        </div>
+
+        <div class="flex justify-between items-center">
+            <span class="text-gray-600 tracking-wide">
+                Tax (18% GST)
+            </span>
+            <span class="font-serif text-gray-900">
+                {{ CURRENCY_SYMBOL }}{{ order.tax_amount }}
+            </span>
+        </div>
+
+        <div class="flex justify-between items-center">
+            <span class="text-gray-600 tracking-wide">
+                Shipping
+            </span>
+            <span class="font-serif text-gray-900">
+                {% if order.shipping_cost > 0 %}
+                    {{ CURRENCY_SYMBOL }}{{ order.shipping_cost }}
+                {% else %}
+                    Complimentary
+                {% endif %}
+            </span>
+        </div>
+
+        <div class="border-t border-gray-300 pt-6 mt-6">
+            <div class="flex justify-between items-center">
+                <span class="text-lg font-serif font-semibold text-gray-900 tracking-tight">
+                    Order Total
+                </span>
+                <span class="text-2xl font-serif font-semibold text-gray-900">
+                    {{ CURRENCY_SYMBOL }}{{ order.total_amount }}
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+</div>                </div>
+            </div>
+
+            <div class="space-y-10">
+
+    <!-- Order Status -->
+    <div class="bg-white border border-gray-200 shadow-xl p-8">
+
+        <h4 class="text-lg font-serif font-semibold text-gray-900 mb-6 border-b border-gray-200 pb-4 tracking-tight">
+            Order Status
+        </h4>
+
+        <!-- Status Badge -->
+        <div class="mb-6">
+            <span class="inline-block px-4 py-1.5 border border-gray-300 text-xs uppercase tracking-wider font-medium text-gray-800">
+                {{ order.get_status_display }}
+            </span>
+        </div>
+
+        <!-- Last Updated -->
+        <div class="mb-6">
+            <div class="text-xs uppercase tracking-wider text-gray-500 mb-2">
+                Last Updated
+            </div>
+            <div class="font-serif text-gray-900">
+                {{ order.updated_at|date:"F d, Y • g:i A" }}
+            </div>
+        </div>
+
+        <!-- Status Message -->
+        <div class="pt-6 border-t border-gray-200">
+            {% if order.status == 'pending' %}
+                <p class="text-sm text-gray-600 font-elegant leading-relaxed">
+                    Your order is currently under review and will be confirmed shortly.
+                </p>
+            {% elif order.status == 'confirmed' %}
+                <p class="text-sm text-gray-600 font-elegant leading-relaxed">
+                    Your order has been confirmed and is being prepared with care.
+                </p>
+            {% elif order.status == 'processing' %}
+                <p class="text-sm text-gray-600 font-elegant leading-relaxed">
+                    Your items are being carefully packaged for dispatch.
+                </p>
+            {% elif order.status == 'shipped' %}
+                <p class="text-sm text-gray-600 font-elegant leading-relaxed">
+                    Your order has been shipped and is on its way to you.
+                </p>
+            {% elif order.status == 'delivered' %}
+                <p class="text-sm text-gray-600 font-elegant leading-relaxed">
+                    Your order has been delivered. We hope you love your new pieces.
+                </p>
+            {% elif order.status == 'cancelled' %}
+                <p class="text-sm text-gray-600 font-elegant leading-relaxed">
+                    This order has been cancelled. Please contact support if you need assistance.
+                </p>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <!-- Tracking Info -->
+    {% if order.tracking_id %}
+    <div class="bg-white border border-gray-200 shadow-xl p-8">
+
+        <h4 class="text-lg font-serif font-semibold text-gray-900 mb-6 border-b border-gray-200 pb-4 tracking-tight">
+            Shipment Tracking
+        </h4>
+
+        <div class="space-y-4">
+            <div>
+                <div class="text-xs uppercase tracking-wider text-gray-500 mb-1">Tracking ID</div>
+                <div class="font-serif text-gray-900 text-base">{{ order.tracking_id }}</div>
+            </div>
+
+            {% if order.tracking_url %}
+            <div class="pt-4 border-t border-gray-200">
+                <a href="{{ order.tracking_url }}" target="_blank" rel="noopener noreferrer"
+                   class="inline-flex items-center gap-2 border border-gray-800 text-gray-900 px-6 py-3 uppercase tracking-wider text-xs font-medium hover:bg-gray-900 hover:text-white transition-all duration-300">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                    </svg>
+                    Track Shipment
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+    {% endif %}
+
+                <div class="bg-white border border-gray-200 shadow-xl p-8">
+
+    <h4 class="text-lg font-serif font-semibold text-gray-900 mb-6 border-b border-gray-200 pb-4 tracking-tight">
+        Payment Details
+    </h4>
+
+    <div class="space-y-6">
+
+        <!-- Payment Method -->
+        <div class="flex justify-between items-start">
+            <div>
+                <div class="text-xs uppercase tracking-wider text-gray-500 mb-1">
+                    Payment Method
+                </div>
+                <div class="font-serif text-gray-900">
+                    {{ order.get_payment_method_display }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Status -->
+        <div class="flex justify-between items-start pt-4 border-t border-gray-200">
+            <div>
+                <div class="text-xs uppercase tracking-wider text-gray-500 mb-1">
+                    Payment Status
+                </div>
+                <div class="font-serif text-gray-900 capitalize">
+                    {{ order.payment_status }}
+                </div>
+            </div>
+        </div>
+
+        {% if order.payment_method == 'cod' %}
+        <!-- COD Notice -->
+        <div class="pt-6 border-t border-gray-200">
+            <p class="text-sm text-gray-600 font-elegant leading-relaxed">
+                Payment will be collected upon delivery.
+            </p>
+        </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+            <!-- Shipping Address -->
+<div class="bg-white border border-gray-200 shadow-xl p-8 mt-10">
+
+    <h4 class="text-lg font-serif font-semibold text-gray-900 mb-6 border-b border-gray-200 pb-4 tracking-tight">
+        Delivery Address
+    </h4>
+
+    <div class="space-y-6">
+
+        <!-- Address Block -->
+        <div class="space-y-2 text-gray-800">
+
+            <p class="font-serif text-gray-900">
+                {{ order.shipping_name }}
+            </p>
+
+            <p class="font-elegant text-gray-700">
+                {{ order.shipping_address_line_1 }}
+            </p>
+
+            {% if order.shipping_address_line_2 %}
+                <p class="font-elegant text-gray-700">
+                    {{ order.shipping_address_line_2 }}
+                </p>
+            {% endif %}
+
+            <p class="font-elegant text-gray-700">
+                {{ order.shipping_city }}, {{ order.shipping_state }} {{ order.shipping_postal_code }}
+            </p>
+
+            <p class="font-elegant text-gray-700">
+                {{ order.shipping_country }}
+            </p>
+
+        </div>
+
+        <!-- Divider -->
+        <div class="border-t border-gray-200 pt-6 space-y-4">
+
+            <!-- Phone -->
+            <div>
+                <div class="text-xs uppercase tracking-wider text-gray-500 mb-1">
+                    Phone
+                </div>
+                <div class="font-serif text-gray-900">
+                    {{ order.phone }}
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div>
+                <div class="text-xs uppercase tracking-wider text-gray-500 mb-1">
+                    Email
+                </div>
+                <div class="font-serif text-gray-900">
+                    {{ order.email }}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+               <!-- Special Instructions -->
+{% if order.notes %}
+<div class="bg-white border border-gray-200 shadow-xl p-8 mt-10">
+
+    <h4 class="text-lg font-serif font-semibold text-gray-900 mb-6 border-b border-gray-200 pb-4 tracking-tight">
+        Special Instructions
+    </h4>
+
+    <div class="bg-gray-50 border border-gray-200 p-6">
+        <p class="text-gray-800 font-elegant leading-relaxed italic">
+            "{{ order.notes }}"
+        </p>
+    </div>
+
+</div>
+{% endif %}
+
+
+<!-- Order Actions -->
+{% if order.status == 'pending' or order.status == 'confirmed' %}
+<div class="bg-white border border-gray-200 shadow-xl p-8 mt-10">
+
+    <h4 class="text-lg font-serif font-semibold text-gray-900 mb-6 border-b border-gray-200 pb-4 tracking-tight">
+        Order Actions
+    </h4>
+
+    <button onclick="cancelOrder('{{ order.order_number }}')"
+        class="w-full border border-red-600 text-red-600  py-4 font-serif font-medium uppercase tracking-wider
+                hover:bg-red-600 hover:text-white transition-all duration-300">
+
+        Cancel Order
+
+    </button>
+
+</div>
+{% endif %}
+
+<style>
+/* Status Badge Styles */
+.status-badge {
+    padding: 0.75rem 1.5rem;
+    border-radius: 2rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: 'Playfair Display', serif;
+    display: inline-block;
+}
+
+.status-pending {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    color: #92400e;
+    border: 1px solid #fbbf24;
+}
+
+.status-confirmed {
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+    color: #1e40af;
+    border: 1px solid #3b82f6;
+}
+
+.status-processing {
+    background: linear-gradient(135deg, #fde68a, #facc15);
+    color: #d97706;
+    border: 1px solid #eab308;
+}
+
+.status-shipped {
+    background: linear-gradient(135deg, #c7d2fe, #a5b4fc);
+    color: #4338ca;
+    border: 1px solid #6366f1;
+}
+
+.status-delivered {
+    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    color: #065f46;
+    border: 1px solid #10b981;
+}
+
+.status-cancelled {
+    background: linear-gradient(135deg, #fecaca, #fca5a5);
+    color: #b91c1c;
+    border: 1px solid #ef4444;
+}
+
+/* Hover effects */
+.bg-white\/80:hover {
+    transform: translateY(-2px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .grid.grid-cols-1.lg\:grid-cols-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .flex.lg\:items-center.lg\:justify-between {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .flex.flex-col.lg\:flex-row.lg\:items-center.lg\:justify-between {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+}
+</style>
+
+<script>
+function cancelOrder(orderNumber) {
+    if (confirm('Are you sure you want to cancel this order? This action cannot be undone and your Jewellery pieces will no longer be reserved for you.')) {
+        // Implement order cancellation logic here
+        fetch(`/orders/${orderNumber}/cancel/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Your order has been cancelled successfully. We hope to serve you again soon.');
+                location.reload();
+            } else {
+                alert('We were unable to cancel your order at this time. Please contact our customer service team for assistance.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while processing your request. Please try again or contact our support team.');
+        });
+    }
+}
+
+// Add elegant loading animations
+document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.bg-white\\/80');
+
+    cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+
+        setTimeout(() => {
+            card.style.transition = 'all 0.6s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+});
+</script>
+{% endblock %}

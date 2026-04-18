@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Out - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-white py-16 px-4 sm:px-6 lg:px-8 lg:py-64">
+
+    <div class="w-full max-w-2xl">
+
+        <div class="border border-gray-200 px-12 py-12">
+
+            <!-- Icon -->
+            <div class="w-16 h-16 mx-auto border border-gray-200 rounded-full flex items-center justify-center mb-8">
+                <svg class="w-6 h-6 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                          d="M17 16l4-4m0 0l-4-4m4 4H7"/>
+                </svg>
+            </div>
+
+            <!-- Heading -->
+            <div class="text-center mb-10">
+                <h2 class="text-2xl font-serif text-gray-900 mb-3">
+                    Until We Meet Again
+                </h2>
+                <p class="text-gray-600 font-elegant text-base">
+                    Are you sure you want to sign out from your {{ SITE_NAME }} account?
+                </p>
+            </div>
+
+            <div class="border-t border-gray-200 mb-10"></div>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <!-- Benefits -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10 text-sm">
+
+                    <div class="flex items-start">
+                        <span class="text-primary-500 font-serif mr-3">01</span>
+                        <span class="font-elegant text-gray-700">
+                            Early access to collections
+                        </span>
+                    </div>
+
+                    <div class="flex items-start">
+                        <span class="text-primary-500 font-serif mr-3">02</span>
+                        <span class="font-elegant text-gray-700">
+                            Personal concierge service
+                        </span>
+                    </div>
+
+                    <div class="flex items-start">
+                        <span class="text-primary-500 font-serif mr-3">03</span>
+                        <span class="font-elegant text-gray-700">
+                            Exclusive member pricing
+                        </span>
+                    </div>
+
+                    <div class="flex items-start">
+                        <span class="text-primary-500 font-serif mr-3">04</span>
+                        <span class="font-elegant text-gray-700">
+                            Secure wishlist & history
+                        </span>
+                    </div>
+
+                </div>
+
+                <!-- Return Promise (Integrated properly) -->
+                <div class="border border-gray-200 p-6 mb-10 text-center">
+                    <h4 class="text-base font-serif text-gray-900 mb-2">
+                        We’ll Be Here When You Return
+                    </h4>
+                    <p class="text-gray-600 font-elegant text-sm">
+                        Your preferences and history remain securely saved.
+                        You’re always welcome back.
+                    </p>
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4">
+
+                    <button type="submit"
+                            class="flex-1 border border-gray-300 
+                                   py-2.5 
+                                   text-sm 
+                                   uppercase tracking-[0.2em] 
+                                   font-sans font-semibold 
+                                   text-gray-800 
+                                   hover:border-black hover:text-black 
+                                   transition-all duration-300">
+                        Sign Out
+                    </button>
+
+                    <a href="{% url 'core:home' %}"
+                       class="flex-1 bg-primary-500 text-white 
+                              py-2.5 
+                              text-sm 
+                              uppercase tracking-[0.2em] 
+                              font-sans font-semibold 
+                              hover:bg-black 
+                              transition-all duration-300 
+                              text-center">
+                        Stay Signed In
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+/* Add elegant hover effects */
+form button:hover, form a:hover {
+    transform: translateY(-2px) scale(1.05);
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+    transition: all 0.3s ease;
+}
+</style>
+{% endblock %}

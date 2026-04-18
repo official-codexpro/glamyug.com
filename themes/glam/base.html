@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{{ SITE_NAME }}{% endblock %}</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://i.ibb.co/KjcdyhGm/Untitled-1200-x-1200-px-6.png" />
+    <link rel="apple-touch-icon" href="/media/logo/2.png" />
+
+    <!-- Preconnects for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Tenor+Sans&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+    <!-- Elegant Fonts for Luxury Jewellery Brand -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Tenor+Sans&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1450652186528849');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1450652186528849&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+
+        colors: {
+          primary: {
+            50: "#ffffff", 100: "#f8f8f8", 200: "#eeeeee",
+            300: "#d1d1d1", 400: "#717171", 500: "#000000",
+            600: "#111111", 700: "#222222", 800: "#333333", 900: "#000000",
+          },
+          cream: {
+            50: "#ffffff", 100: "#fafafa", 200: "#f2f2f2",
+            300: "#e5e5e5", 400: "#a3a3a3", 500: "#000000", 600: "#000000",
+          },
+          softwhite: "#ffffff",
+          charcoal: "#000000",
+          muted: "#737373",
+          gold: { 500: "#000000", 600: "#111111" },
+        },
+
+        /* ✅ FIXED TYPOGRAPHY SYSTEM */
+        fontFamily: {
+
+          /* 🔥 GLOBAL DEFAULT (IMPORTANT) */
+          sans: ["Futura", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
+
+          /* 🔥 ALSO OVERRIDE SERIF (TAKI ISSUE NA AAYE) */
+          serif: ["Futura", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
+
+          /* 🎯 OPTIONAL LUXURY USAGE (manual use only) */
+          heading: ["Playfair Display", "serif"], 
+          accent: ["Cormorant Garamond", "serif"],
+
+          /* UI same as default */
+          body: ["Futura", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
+        },
+
+        boxShadow: {
+          luxury: "0 1px 15px rgba(0,0,0,0.05)",
+          soft: "0 1px 5px rgba(0,0,0,0.02)",
+          sharp: "0 0 0 2px #000000",
+        },
+
+        animation: {
+          shimmer: "shimmer 3s infinite",
+          float: "float 6s ease-in-out infinite",
+        },
+
+        keyframes: {
+          shimmer: {
+            "0%": { transform: "translateX(-100%)" },
+            "100%": { transform: "translateX(100%)" },
+          },
+          float: {
+            "0%, 100%": { transform: "translateY(0px)" },
+            "50%": { transform: "translateY(-12px)" },
+          },
+        },
+      },
+    },
+  };
+</script>
+
+    <!-- clarity  -->
+    <script type="text/javascript">
+      (function (c, l, a, r, i, t, y) {
+        c[a] =
+          c[a] ||
+          function () {
+            (c[a].q = c[a].q || []).push(arguments);
+          };
+        t = l.createElement(r);
+        t.async = 1;
+        t.src = "https://www.clarity.ms/tag/" + i;
+        y = l.getElementsByTagName(r)[0];
+        y.parentNode.insertBefore(t, y);
+      })(window, document, "clarity", "script", "vlt9ux2hdl");
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-PLJK4CWM");
+    </script>
+    <!-- End Google Tag Manager -->
+
+    <meta
+      name="google-site-verification"
+      content="DJ8hF8rd8p_7ZukZ2RFqKY7cydGmw8d8dR1vMBYj3-8"
+    />
+
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-T578K8XXTL"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-T578K8XXTL");
+    </script>
+
+    <!-- Meta Tags -->
+    <meta
+      name="description"
+      content="{% block description %}Exquisite Luxury Jewellery Collection - Elegant, Sophisticated, Timeless{% endblock %}"
+    />
+    <meta
+      name="keywords"
+      content="{% block keywords %}luxury Jewellery, diamond Jewellery, gold Jewellery, elegant accessories, fine Jewellery, women's Jewellery{% endblock %}"
+    />
+    <link
+      rel="canonical"
+      href="{% block canonical %}{{ request.build_absolute_uri }}{% endblock %}"
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:type"        content="{% block og_type %}website{% endblock %}">
+    <meta property="og:url"         content="{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}">
+    <meta property="og:title"       content="{% block og_title %}{{ SITE_NAME }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Exquisite Luxury Jewellery Collection - Elegant, Sophisticated, Timeless{% endblock %}">
+    <meta property="og:image"       content="{% block og_image %}{% if settings.og_image %}{{ request.scheme }}://{{ request.get_host }}{{ settings.og_image.url }}{% endif %}{% endblock %}">
+    <meta property="og:site_name"   content="{{ SITE_NAME }}">
+    <meta property="og:locale"      content="en_IN">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="{% block twitter_title %}{{ SITE_NAME }}{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Exquisite Luxury Jewellery Collection - Elegant, Sophisticated, Timeless{% endblock %}">
+    <meta name="twitter:image"       content="{% block twitter_image %}{% if settings.og_image %}{{ request.scheme }}://{{ request.get_host }}{{ settings.og_image.url }}{% endif %}{% endblock %}">
+
+    <!-- Robots -->
+    <meta name="robots" content="{% block robots %}index, follow{% endblock %}">
+
+    <!-- Organization Schema (always present on every page) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "{{ SITE_NAME|escapejs }}",
+      "url": "{{ request.scheme }}://{{ request.get_host }}",
+      "logo": "{{ request.scheme }}://{{ request.get_host }}/media/logo/2.png",
+      "sameAs": [
+        "{% if settings.facebook_url %}{{ settings.facebook_url }}{% endif %}",
+        "{% if settings.instagram_url %}{{ settings.instagram_url }}{% endif %}"
+      ]
+    }
+    </script>
+
+    <!-- WebSite Schema with SearchAction -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "{{ SITE_NAME|escapejs }}",
+      "url": "{{ request.scheme }}://{{ request.get_host }}"
+    }
+    </script>
+
+    <!-- Structured Data (JSON-LD) — overridden per page -->
+    {% block schema_ld %}{% endblock %}
+
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body class="font-sans bg-cream-50 text-charcoal min-h-screen flex flex-col">    <!-- Top Bar Announcements -->
+    <!--navbar include -->
+    {% include "include/base/navbar.html" %}
+
+   
+    <!-- Messages -->
+    {% if messages %} <div class="fixed top-24 right-4 z-50 space-y-3"> {% for message in messages %} <div class="bg-white/95 backdrop-blur-lg border-l-4 {% if message.tags == 'error' %}border-red-400{% elif message.tags == 'success' %}border-emerald-400{% elif message.tags == 'warning' %}border-amber-400{% else %}border-primary-400{% endif %} p-4 rounded-r-3xl shadow-xl max-w-md" > <div class="flex"> <div class="flex-shrink-0"> {% if message.tags == 'error' %} <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20" > <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /> </svg> {% elif message.tags == 'success' %} <svg class="h-5 w-5 text-emerald-400" fill="currentColor" viewBox="0 0 20 20" > <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /> </svg> {% else %} <svg class="h-5 w-5 text-primary-400" fill="currentColor" viewBox="0 0 20 20" > <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" /> </svg> {% endif %} </div> <div class="ml-3"> <p class="text-sm font-medium text-gray-800">{{ message }}</p> </div> </div> </div> {% endfor %} </div> {% endif %}
+
+    <!-- Main Content -->
+    <main class="flex-1">
+      {% block banner %}{% endblock %} {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer include -->
+    {% include "include/base/footer.html" %}
+
+    <!-- Scripts -->
+    <script>
+      // Mobile menu toggle
+      document
+        .getElementById("mobile-menu-btn")
+        .addEventListener("click", function () {
+          const menu = document.getElementById("mobile-menu");
+          menu.classList.toggle("hidden");
+        });
+
+      // Auto-hide messages after 5 seconds
+      setTimeout(function () {
+        const messages = document.querySelectorAll(".fixed.top-24 > div");
+        messages.forEach(function (message) {
+          message.style.opacity = "0";
+          message.style.transform = "translateX(100%)";
+          setTimeout(function () {
+            message.remove();
+          }, 300);
+        });
+      }, 5000);
+
+      // Add elegant hover effects to navigation
+      document.querySelectorAll("nav a").forEach((link) => {
+        link.addEventListener("mouseenter", function () {
+          this.style.transform = "translateY(-1px)";
+        });
+        link.addEventListener("mouseleave", function () {
+          this.style.transform = "translateY(0)";
+        });
+      });
+    </script>
+
+    {% block extra_scripts %}{% endblock %}
+  </body>
+</html>

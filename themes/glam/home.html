@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block title %}{{ settings.seo_title|default:SITE_NAME }}{% endblock %}
+{% block description %}{{ settings.seo_description|default:"Exquisite Luxury Jewellery Collection - Elegant, Sophisticated, Timeless" }}{% endblock %}
+{% block keywords %}{{ settings.seo_keywords|default:"luxury jewellery, diamond jewellery, gold jewellery, elegant accessories, fine jewellery, women's jewellery" }}{% endblock %}
+{% block og_title %}{{ settings.seo_title|default:SITE_NAME }}{% endblock %}
+{% block og_description %}{{ settings.seo_description|default:"Exquisite Luxury Jewellery Collection - Elegant, Sophisticated, Timeless" }}{% endblock %}
+{% block og_image %}{% if settings.og_image %}{{ request.scheme }}://{{ request.get_host }}{{ settings.og_image.url }}{% endif %}{% endblock %}
+{% block twitter_title %}{{ settings.seo_title|default:SITE_NAME }}{% endblock %}
+{% block twitter_description %}{{ settings.seo_description|default:"Exquisite Luxury Jewellery Collection - Elegant, Sophisticated, Timeless" }}{% endblock %}
+{% block twitter_image %}{% if settings.og_image %}{{ request.scheme }}://{{ request.get_host }}{{ settings.og_image.url }}{% endif %}{% endblock %}
+
+{% block banner %}
+<!-- HERO — full-viewport cinematic carousel-->
+{% include "include/home/hero.html" %}
+{% endblock %}
+
+{% block content %}
+<!-- Shortcodes /-include all section here -->
+{% include "include/home/trust.html" %}
+{% include "include/home/catagories.html" %}
+{% include "shortcode/perfume.html" with count=4 %}
+{% include "shortcode/thigh_chain.html" with count=7 %}
+{% include "include/home/bestseller.html" with count=7 %}
+{% include "shortcode/anklets.html" with count=7 %}
+{% include "shortcode/chokers.html" with count=4 %}
+{% include "shortcode/back_chain.html" with count=8 %}
+
+<!--SCRIPTS-->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  /* ── Hero carousel ── */
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots   = document.querySelectorAll('.hero-dot');
+  const prevBtn = document.getElementById('heroPrev');
+  const nextBtn = document.getElementById('heroNext');
+  const progress = document.getElementById('heroProgress');
+
+  if (slides.length > 1) {
+    let cur = 0, timer, progTimer, progVal = 0;
+    const DURATION = 6000;
+
+    function goTo(idx) {
+      slides[cur].classList.remove('is-active');
+      dots[cur] && dots[cur].classList.remove('is-active');
+      cur = (idx + slides.length) % slides.length;
+      slides[cur].classList.add('is-active');
+      dots[cur] && dots[cur].classList.add('is-active');
+      resetProgress();
+    }
+
+    function resetProgress() {
+      clearInterval(progTimer); progVal = 0;
+      if (progress) { progress.style.transition = 'none'; progress.style.width = '0%'; }
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (progress) { progress.style.transition = `width ${DURATION}ms linear`; progress.style.width = '100%'; }
+        });
+      });
+    }
+
+    function startAuto() { timer = setInterval(() => goTo(cur + 1), DURATION); }
+
+    if (prevBtn) prevBtn.addEventListener('click', () => { clearInterval(timer); goTo(cur - 1); startAuto(); });
+    if (nextBtn) nextBtn.addEventListener('click', () => { clearInterval(timer); goTo(cur + 1); startAuto(); });
+    dots.forEach((d, i) => d.addEventListener('click', () => { clearInterval(timer); goTo(i); startAuto(); }));
+
+    resetProgress(); startAuto();
+  }
+
+  /* ── Scroll reveal ── */
+  const revEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    revEls.forEach(el => io.observe(el));
+  } else {
+    revEls.forEach(el => el.classList.add('in-view'));
+  }
+
+  /* ── Newsletter ── */
+  const nlForm = document.getElementById('newsletter-form');
+  const nlMsg  = document.getElementById('newsletter-message');
+  if (nlForm) {
+    nlForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const fd = new FormData(this);
+      try {
+        const r = await fetch(this.action, { method:'POST', headers:{'X-Requested-With':'XMLHttpRequest','X-CSRFToken':fd.get('csrfmiddlewaretoken')}, body:fd });
+        const d = await r.json();
+        nlMsg.style.display = 'block';
+        nlMsg.textContent = d.message;
+        nlMsg.style.color = d.success ? '#c9a84c' : '#e57373';
+        if (d.success) nlForm.reset();
+        setTimeout(() => { nlMsg.style.display = 'none'; }, 5000);
+      } catch(err) {
+        nlMsg.style.display = 'block'; nlMsg.style.color = '#e57373';
+        nlMsg.textContent = 'An error occurred. Please try again.';
+      }
+    });
+  }
+
+  /* ── Wishlist ── */
+  window.addToWishlist = async function (productId) {
+    try {
+      const r = await fetch('{% url "wishlist:add_to_wishlist" %}', {
+        method:'POST',
+        headers:{'Content-Type':'application/json','X-CSRFToken':getCookie('csrftoken')},
+        body:JSON.stringify({product_id:productId})
+      });
+      const d = await r.json();
+      if (d.success) { const c = document.getElementById('wishlist-count'); if (c) c.textContent = d.wishlist_count; }
+      showToast(d.message, d.success ? 'success' : 'error');
+    } catch(e) { showToast('Error adding to wishlist', 'error'); }
+  };
+
+  function getCookie(name) {
+    let v = null;
+    document.cookie && document.cookie.split(';').forEach(c => { c=c.trim(); if(c.startsWith(name+'=')) v=decodeURIComponent(c.slice(name.length+1)); });
+    return v;
+  }
+  function showToast(msg, type) {
+    const d = document.createElement('div');
+    d.className = 'fixed top-24 right-4 z-[9999] px-4 py-3 text-sm font-medium shadow-xl';
+    d.style.cssText = `background:${type==='success'?'#1a1a1a':'#c0392b'};color:#fff;border-left:3px solid ${type==='success'?'#c9a84c':'#e74c3c'}`;
+    d.textContent = msg;
+    document.body.appendChild(d);
+    setTimeout(() => d.remove(), 3000);
+  }
+});
+</script>
+<script>
+(function() {
+    const nav = document.getElementById('main-nav');
+    const navLogo = document.getElementById('nav-logo');
+
+    const updateNavStyles = () => {
+        // Condition applies to both PC and Mobile now
+        const isTop = window.scrollY < 10; 
+        const items = nav.querySelectorAll('span, a, button, svg');
+
+        // We keep a small transition for a premium feel on PC, 
+        // but you can set this to 'none' if you want it instant.
+        nav.style.transition = 'background-color 0.3s ease, border-color 0.3s ease';
+        if(navLogo) navLogo.style.transition = 'filter 0.3s ease';
+
+        if (isTop) {
+            // --- TOP STATE (Transparent + White Text) ---
+            nav.style.backgroundColor = 'transparent';
+            nav.style.borderColor = 'transparent';
+            nav.classList.remove('shadow-sm'); // Remove shadow when at top
+            
+            if (navLogo) {
+                // Makes the logo white
+                navLogo.style.filter = 'brightness(0) invert(1)';
+            }
+
+            items.forEach(el => {
+                // Only target elements that aren't intentionally buttons with black backgrounds
+                if (!el.classList.contains('bg-black') && !el.closest('.bg-black')) {
+                    el.style.setProperty('color', '#ffffff', 'important');
+                    el.style.setProperty('stroke', '#ffffff', 'important');
+                }
+            });
+        } else {
+            // --- SCROLLED STATE (White BG + Black Text) ---
+            nav.style.backgroundColor = '#ffffff';
+            nav.style.borderColor = '#f3f4f6';
+            nav.classList.add('shadow-sm'); // Add subtle shadow on scroll
+
+            if (navLogo) {
+                // Returns logo to original colors (black/dark)
+                navLogo.style.filter = 'brightness(0)';
+            }
+
+            items.forEach(el => {
+                // Clear the inline styles to let original CSS/Tailwind take over
+                el.style.color = '';
+                el.style.stroke = '';
+            });
+        }
+    };
+
+    // Listeners for scroll, resize, and initial load
+    window.addEventListener('scroll', updateNavStyles);
+    window.addEventListener('resize', updateNavStyles);
+    window.addEventListener('DOMContentLoaded', updateNavStyles);
+    
+    // Initial call
+    updateNavStyles();
+})();
+</script>
+{% endblock %}

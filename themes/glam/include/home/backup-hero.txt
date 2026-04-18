@@ -1,0 +1,235 @@
+<script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+    .reveal-track { background-color: #ffffff; }
+    
+    #heroBanner {
+        position: absolute;
+        inset: 0;
+        z-index: 30;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    /* 4 Images + 1 Clone = 500% */
+    .slider-wrapper {
+        display: flex;
+        width: 500%; 
+        height: 100%;
+        will-change: transform;
+    }
+
+    .slide {
+        width: 20%; 
+        height: 100vh;
+        flex-shrink: 0;
+        overflow: hidden;
+    }
+
+    .slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1.1);
+        will-change: transform; /* Fixes lag in zoom animation */
+        transition: transform 6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .slide.active img {
+        transform: scale(1);
+    }
+
+    /* Premium Liquid Fill Button */
+    .btn-premium {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(26, 26, 26, 0.2);
+        background: transparent;
+        color: #1a1a1a;
+        transition: color 0.4s ease;
+        z-index: 1;
+        display: inline-block;
+        text-decoration: none;
+    }
+
+    .btn-premium::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 0%;
+        background-color: #1a1a1a;
+        transition: height 0.4s cubic-bezier(0.7, 0, 0.3, 1);
+        z-index: -1;
+    }
+
+    .btn-premium:hover {
+        color: #ffffff;
+    }
+
+    .btn-premium:hover::before {
+        height: 100%;
+    }
+
+    /* Minimalist Glass Nav */
+    .nav-glass {
+        backdrop-filter: blur(12px);
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .nav-glass:hover {
+        background: #ffffff;
+        color: #000;
+        transform: scale(1.05);
+    }
+
+    button {
+        user-select: none;
+        outline: none;
+    }
+</style>
+
+<section id="mainTrigger" class="reveal-track relative h-[300vh] w-full">
+    <div class="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
+        
+        <div id="heroBanner">
+            <div class="slider-wrapper" id="sliderWrapper">
+                <div class="slide active"><img src="/media/hero/pc.jpeg" alt="Slide 01"></div>
+                <div class="slide"><img src="/media/hero/banner2.jpg" alt="Slide 02"></div>
+                <div class="slide"><img src="/media/hero/banner3.jpg" alt="Slide 03"></div>
+                <div class="slide"><img src="/media/hero/banner4.jpg" alt="Slide 04"></div>
+                <div class="slide"><img src="/media/hero/pc.jpeg" alt="Slide 01 Clone"></div>
+            </div>
+
+            <div id="sliderControls" class="absolute bottom-10 right-10 z-40 flex gap-4 transition-opacity duration-500">
+                <button onclick="manualMove(-1)" class="nav-glass w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center text-white cursor-pointer">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <button onclick="manualMove(1)" class="nav-glass w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center text-white cursor-pointer">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="revealContent" class="relative z-10 w-full max-w-5xl px-6 text-center" style="opacity: 0;">
+            <span class="block mb-6 text-[10px] md:text-xs uppercase tracking-[0.8em] text-[#BDA171] font-medium opacity-90">
+                The Royal Collection
+            </span>
+            
+            <h1 class="text-[#1a1a1a] uppercase font-semibold tracking-tighter text-6xl md:text-8xl lg:text-[8.5rem] mb-10 leading-[0.9]">
+                DEFINING <br> <span style="-webkit-text-stroke: 1.5px #1a1a1a; color: transparent;">FEMININE</span>
+            </h1>
+
+            <div class="w-20 h-[1.5px] bg-[#BDA171] mx-auto mb-8"></div>
+            
+            <p class="text-gray-500 font-light tracking-[0.25em] text-[10px] md:text-xs mb-12 max-w-md mx-auto uppercase leading-loose">
+                Experience the heritage of exquisite craftsmanship and timeless luxury.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-5 justify-center items-center">
+                <a href="/products/?category=thigh-chains" class="btn-premium w-full sm:w-auto px-12 py-5 text-[10px] font-bold uppercase tracking-[0.4em]">
+                    Explore Thighchain
+                </a>
+                <a href="/products/?category=body-chain-for-backless-dress" class="btn-premium w-full sm:w-auto px-12 py-5 text-[10px] font-bold uppercase tracking-[0.4em]">
+                    Explore Backchain
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    const lenis = new Lenis();
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+
+    const wrapper = document.getElementById('sliderWrapper');
+    const slides = document.querySelectorAll('.slide');
+    const totalRealSlides = slides.length - 1; 
+    const stepPercent = 100 / slides.length; 
+    
+    let currentIndex = 0;
+    let isTransitioning = false;
+    const transitionDuration = 1.4;
+
+    function moveSlider(direction) {
+        if (isTransitioning) return;
+        isTransitioning = true;
+        
+        currentIndex += direction;
+        slides.forEach(s => s.classList.remove('active'));
+
+        if (currentIndex > totalRealSlides) {
+             gsap.to(wrapper, {
+                xPercent: -(totalRealSlides * stepPercent),
+                duration: transitionDuration,
+                ease: "expo.inOut",
+                onComplete: () => {
+                    currentIndex = 0;
+                    gsap.set(wrapper, { xPercent: 0 });
+                    slides[currentIndex].classList.add('active');
+                    isTransitioning = false;
+                }
+            });
+        } 
+        else if (currentIndex < 0) {
+            gsap.set(wrapper, { xPercent: -(totalRealSlides * stepPercent) }); 
+            currentIndex = totalRealSlides - 1;
+            
+            gsap.to(wrapper, {
+                xPercent: -(currentIndex * stepPercent),
+                duration: transitionDuration,
+                ease: "expo.inOut",
+                onComplete: () => {
+                    slides[currentIndex].classList.add('active');
+                    isTransitioning = false;
+                }
+            });
+        }
+        else {
+            gsap.to(wrapper, {
+                xPercent: -(currentIndex * stepPercent),
+                duration: transitionDuration,
+                ease: "expo.inOut",
+                onComplete: () => {
+                    slides[currentIndex].classList.add('active');
+                    isTransitioning = false;
+                }
+            });
+        }
+    }
+
+    let autoPlay = setInterval(() => moveSlider(1), 5000);
+
+    function manualMove(dir) {
+        if (isTransitioning) return;
+        clearInterval(autoPlay);
+        moveSlider(dir);
+        autoPlay = setInterval(() => moveSlider(1), 5000);
+    }
+
+    const tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: "#mainTrigger",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1.2,
+            onUpdate: (self) => {
+                const controls = document.getElementById('sliderControls');
+                controls.style.opacity = self.progress > 0.05 ? "0" : "1";
+            }
+        }
+    });
+
+    tl.to("#heroBanner", { yPercent: -100, ease: "power2.inOut" }, 0);
+    tl.to("#revealContent", { opacity: 1, y: -40, ease: "power2.out" }, 0.3);
+</script>

@@ -1,0 +1,153 @@
+<!-- ═══════════════════════════════════════════════════════════
+     PERMUME COLLABORATION SECTION 
+═══════════════════════════════════════════════════════════ -->
+<a href="/products/?category=perfume"
+   class="block w-full h-[75vh] md:h-[90vh] overflow-hidden"
+   style="font-family: 'Arial Black', sans-serif;">
+
+  <div class="relative w-full h-full flex items-center justify-center bg-black">
+
+    <!-- VIDEO -->
+    <video 
+      class="w-full h-full object-cover"
+      autoplay 
+      muted 
+      loop 
+      playsinline>
+      
+      <source src="/media/img-section/perfumgif.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+
+    <!-- Overlay (optional) -->
+    <div class="absolute inset-0 flex items-center justify-center text-center px-4">
+      <!-- Content yaha add kar sakta hai -->
+    </div>
+
+  </div>
+</a>
+
+<section class="bg-white py-24 font-sans">
+  <div class="w-full max-w-[1440px] 2xl:max-w-[1700px] mx-auto px-6 md:px-12 lg:px-20">
+
+    <!-- Heading -->
+    <div class="text-center mb-16">
+      <span class="text-[11px] tracking-[0.25em] uppercase text-gray-400 font-light">
+        New Arrivals
+      </span>
+      <h2 class="text-[26px] md:text-[34px] font-normal mt-3 tracking-[0.1em] uppercase text-black">
+        Aurelie Parfum Collection
+
+      </h2>
+    </div>
+
+    <!-- Grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+      {% for product in perfume_products %}
+      {% if not count or forloop.counter <= count %}
+
+      <div class="group block relative cursor-pointer">
+
+        <!-- Image -->
+        <div class="relative aspect-square overflow-hidden bg-[#f8f8f8] flex items-center justify-center">
+
+          <a href="{% url 'catalog:product_detail' product.slug %}">
+            {% if product.image %}
+            <img src="{{ product.image.url }}"
+                 alt="{{ product.title }}"
+                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+            {% endif %}
+          </a>
+
+          <!-- Wishlist -->
+          {% if user.is_authenticated %}
+          <button class="absolute top-4 right-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/80 backdrop-blur-md opacity-0 group-hover:opacity-100 transition duration-300">
+            <svg class="w-4 h-4" fill="none" stroke="#333" stroke-width="1.2" viewBox="0 0 24 24">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.84-8.84 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </button>
+          {% endif %}
+
+          <!-- Badge -->
+          {% if product.featured %}
+          <span class="absolute top-4 left-4 text-[9px] tracking-[0.25em] uppercase bg-black text-white px-3 py-1">
+            New
+          </span>
+          {% endif %}
+
+          <!-- Add to Cart -->
+          {% if product.is_in_stock %}
+          <div class="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-all duration-500">
+            <form method="post" action="{% url 'catalog:cart_add' product.id %}">
+              {% csrf_token %}
+              <input type="hidden" name="quantity" value="1">
+
+              <button type="submit"
+                class="w-full bg-black text-white text-[11px] tracking-[0.25em] uppercase py-4 flex items-center justify-center gap-2">
+
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M6 6h15l-1.5 9h-13z"/>
+                  <circle cx="9" cy="21" r="1"/>
+                  <circle cx="18" cy="21" r="1"/>
+                </svg>
+
+                Add to Cart
+              </button>
+            </form>
+          </div>
+          {% else %}
+          <div class="absolute bottom-0 left-0 right-0 bg-gray-100 text-gray-400 text-[11px] tracking-[0.25em] uppercase py-4 text-center">
+            Sold Out
+          </div>
+          {% endif %}
+
+        </div>
+
+        <!-- Info -->
+        <div class="mt-4 px-1 text-left">
+
+          <p class="text-[9px] tracking-[0.3em] uppercase text-gray-400 mb-1">
+            {{ product.category.name }}
+          </p>
+
+           <h3 class="product-title text-[13px] tracking-widest uppercase font-medium text-black mb-3">
+                   {{ product.title }}
+                </h3>
+
+          <div class="mt-1 text-sm">
+
+            {% if product.sale_price and product.sale_price < product.price %}
+              <span class="text-black font-medium">
+                {{ CURRENCY_SYMBOL }}{{ product.sale_price }}
+              </span>
+              <span class="text-gray-400 line-through ml-2">
+                {{ CURRENCY_SYMBOL }}{{ product.price }}
+              </span>
+            {% else %}
+              <span class="text-black font-medium">
+                {{ CURRENCY_SYMBOL }}{{ product.price }}
+              </span>
+            {% endif %}
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {% endif %}
+      {% endfor %}
+
+    </div>
+
+    <!-- CTA -->
+    <div class="flex justify-center mt-20">
+      <a href="/products/?category=perfume"
+         class="px-12 py-4 border border-black text-[11px] tracking-[0.3em] uppercase font-medium hover:bg-black hover:text-white transition-all duration-300 rounded-full">
+        View All
+      </a>
+    </div>
+
+  </div>
+</section>

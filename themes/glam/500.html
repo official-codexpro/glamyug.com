@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 – Server Error | Glamyug</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400&display=swap');
+        body { font-family: 'Lato', sans-serif; }
+        h1, h2 { font-family: 'Playfair Display', serif; }
+
+        /* ── Cracked gem animation ── */
+        @keyframes crack {
+            0%,90%,100% { opacity: 0; }
+            92%          { opacity: 1; }
+        }
+        @keyframes gemShake {
+            0%, 100%  { transform: translateX(0)   rotate(0deg); }
+            10%        { transform: translateX(-4px) rotate(-3deg); }
+            20%        { transform: translateX(4px)  rotate(3deg); }
+            30%        { transform: translateX(-3px) rotate(-2deg); }
+            40%        { transform: translateX(3px)  rotate(2deg); }
+            50%        { transform: translateX(0)   rotate(0deg); }
+        }
+        @keyframes glitchGlow {
+            0%, 100% { filter: drop-shadow(0 0 8px #ef4444) drop-shadow(0 0 16px #f97316); }
+            50%       { filter: drop-shadow(0 0 24px #ef4444) drop-shadow(0 0 48px #f97316); }
+        }
+        .gem-error {
+            animation: gemShake 3s ease-in-out infinite, glitchGlow 2s ease-in-out infinite;
+        }
+        .crack-line {
+            animation: crack 3s ease-in-out infinite;
+        }
+
+        /* ── Glitch text ── */
+        @keyframes glitch {
+            0%, 100% { text-shadow: none; transform: translate(0); }
+            10%       { text-shadow: -3px 0 #ef4444, 3px 0 #3b82f6; transform: translate(2px, 0); }
+            20%       { text-shadow: 3px 0 #ef4444, -3px 0 #3b82f6; transform: translate(-2px, 0); }
+            30%       { text-shadow: none; transform: translate(0); }
+        }
+        .glitch-text {
+            background: linear-gradient(135deg, #ef4444, #f97316, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glitch 4s ease-in-out infinite;
+        }
+
+        /* ── Floating bolts ── */
+        @keyframes bolt {
+            0%        { opacity: 0; transform: translateY(-20px) rotate(-10deg) scale(.5); }
+            30%,70%   { opacity: 1; transform: translateY(0)     rotate(0deg)   scale(1);  }
+            100%      { opacity: 0; transform: translateY(20px)  rotate(10deg)  scale(.5); }
+        }
+        .bolt { animation: bolt 2s ease-in-out infinite; }
+        .bolt:nth-child(2) { animation-delay: .7s; }
+        .bolt:nth-child(3) { animation-delay: 1.4s; }
+
+        /* ── Progress bar loop ── */
+        @keyframes progress {
+            0%   { width: 0%; }
+            60%  { width: 80%; }
+            80%  { width: 83%; }
+            100% { width: 0%; }
+        }
+        .progress-bar { animation: progress 3s ease-in-out infinite; }
+
+        /* ── Bokeh ── */
+        @keyframes bokeh {
+            0%, 100% { transform: scale(1);   opacity: .12; }
+            50%       { transform: scale(1.4); opacity: .22; }
+        }
+        .bokeh {
+            position: absolute; border-radius: 50%;
+            filter: blur(50px); pointer-events: none;
+            animation: bokeh 7s ease-in-out infinite;
+        }
+
+        /* ── Spinning gear ── */
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes spinR { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+        .gear1 { animation: spin  4s linear infinite; transform-origin: center; }
+        .gear2 { animation: spinR 3s linear infinite; transform-origin: center; }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 via-rose-950 to-gray-900 flex flex-col items-center justify-center text-center px-4 py-12 overflow-hidden relative">
+
+    <!-- Background bokeh -->
+    <div class="bokeh w-96 h-96 bg-red-600 top-0 left-0 -translate-x-1/3" style="animation-delay:0s"></div>
+    <div class="bokeh w-80 h-80 bg-orange-500 bottom-0 right-0 translate-x-1/3" style="animation-delay:3s"></div>
+
+    <!-- Gears -->
+    <svg class="absolute opacity-5 top-10 right-10 w-32 h-32" viewBox="0 0 100 100">
+        <g class="gear1">
+            <path fill="white" d="M43,0h14l2,10a38,38,0,0,1,9,4l9-4 10,10-4,9a38,38,0,0,1,4,9l10,2v14l-10,2a38,38,0,0,1-4,9l4,9-10,10-9-4a38,38,0,0,1-9,4l-2,10H43l-2-10a38,38,0,0,1-9-4l-9,4-10-10,4-9a38,38,0,0,1-4-9L3,57V43l10-2a38,38,0,0,1,4-9l-4-9L23,13l9,4a38,38,0,0,1,9-4ZM50,35A15,15,0,1,0,65,50,15,15,0,0,0,50,35Z"/>
+        </g>
+    </svg>
+    <svg class="absolute opacity-5 bottom-16 left-10 w-24 h-24" viewBox="0 0 100 100">
+        <g class="gear2">
+            <path fill="white" d="M43,0h14l2,10a38,38,0,0,1,9,4l9-4 10,10-4,9a38,38,0,0,1,4,9l10,2v14l-10,2a38,38,0,0,1-4,9l4,9-10,10-9-4a38,38,0,0,1-9,4l-2,10H43l-2-10a38,38,0,0,1-9-4l-9,4-10-10,4-9a38,38,0,0,1-4-9L3,57V43l10-2a38,38,0,0,1,4-9l-4-9L23,13l9,4a38,38,0,0,1,9-4ZM50,35A15,15,0,1,0,65,50,15,15,0,0,0,50,35Z"/>
+        </g>
+    </svg>
+
+    <!-- Cracked gem -->
+    <div class="gem-error mb-6">
+        <svg viewBox="0 0 120 130" width="150" height="150">
+            <polygon points="60,2 110,40 60,55 10,40"  fill="#7f1d1d" stroke="#ef4444" stroke-width="1.5"/>
+            <polygon points="60,55 10,40 25,118"        fill="#991b1b" opacity=".9"/>
+            <polygon points="60,55 110,40 95,118"       fill="#b91c1c" opacity=".9"/>
+            <polygon points="60,55 25,118 95,118"       fill="#dc2626"/>
+            <!-- crack lines -->
+            <g class="crack-line" stroke="#fbbf24" stroke-width="1.5" fill="none" stroke-linecap="round">
+                <line x1="60" y1="20" x2="45" y2="65"/>
+                <line x1="45" y1="65" x2="55" y2="90"/>
+                <line x1="60" y1="35" x2="80" y2="80"/>
+            </g>
+            <!-- glint -->
+            <circle cx="78" cy="28" r="3" fill="white" opacity=".6"/>
+        </svg>
+    </div>
+
+    <!-- Lightning bolts row -->
+    <div class="flex gap-6 mb-4">
+        <svg class="bolt w-6 h-6 text-yellow-400 fill-current" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>
+        <svg class="bolt w-8 h-8 text-orange-400 fill-current" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>
+        <svg class="bolt w-6 h-6 text-yellow-400 fill-current" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>
+    </div>
+
+    <!-- 500 -->
+    <h1 class="text-9xl font-serif font-black glitch-text leading-none mb-2">500</h1>
+
+    <!-- Decorative line -->
+    <div class="flex items-center gap-4 mb-6">
+        <div class="h-px w-16 bg-gradient-to-r from-transparent to-red-500"></div>
+        <div class="w-2 h-2 rounded-full bg-orange-400"></div>
+        <div class="h-px w-16 bg-gradient-to-l from-transparent to-red-500"></div>
+    </div>
+
+    <h2 class="font-serif text-2xl md:text-3xl font-bold text-rose-200 mb-3">Our chain broke!</h2>
+    <p class="text-gray-400 text-base md:text-lg max-w-md mb-6 leading-relaxed">
+        Something cracked on our end — not your fault, we promise.
+        Our team of jewellers is already re-setting this precious stone.
+    </p>
+
+    <!-- Fake progress bar -->
+    <div class="w-64 bg-gray-700 rounded-full h-2 mb-8 overflow-hidden">
+        <div class="progress-bar h-full bg-gradient-to-r from-orange-500 to-red-500 rounded-full"></div>
+    </div>
+    <p class="text-xs text-gray-500 mb-8">Re-polishing the server… please wait</p>
+
+    <div class="flex flex-col sm:flex-row gap-4 items-center">
+        <a href="/"
+           class="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-red-600 text-white font-semibold px-8 py-3 rounded-full hover:from-orange-600 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+            Take Me Home
+        </a>
+        <button onclick="location.reload()"
+                class="inline-flex items-center gap-2 border-2 border-orange-500 text-orange-300 font-semibold px-8 py-3 rounded-full hover:bg-orange-900/30 transition-all duration-300">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+            Try Again
+        </button>
+    </div>
+
+    <p class="mt-12 text-xs text-gray-600">Error 500 &mdash; Internal Server Error</p>
+</body>
+</html>

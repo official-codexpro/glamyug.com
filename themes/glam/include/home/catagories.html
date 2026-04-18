@@ -1,0 +1,97 @@
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     CATEGORY GRID — editorial layout
+═══════════════════════════════════════════════════════════ -->
+{% if category_cards %}
+<section class="py-12 bg-white overflow-hidden" style="background-color: #ffffff;">
+    <div class="max-w-[1600px] mx-auto px-6">
+        
+        <div class="mb-10 flex items-end justify-between border-b border-gray-100 pb-6">
+            <div>
+                <span style="font-size: 9px;" class="tracking-[0.2em] uppercase text-gray-400 block mb-1">Collections</span>
+                <h2 class="text-xl md:text-3xl text-gray-900 uppercase tracking-tight font-normal">
+                    Shop by category
+                </h2>
+            </div>
+            <a href="{% url 'catalog:product_list' %}" class="hidden md:block text-[11px] uppercase tracking-widest text-gray-400 hover:text-black transition-colors">
+                Browse all
+            </a>
+        </div>
+
+        <div class="flex md:grid md:grid-cols-4 gap-x-4 md:gap-x-6 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory scrollbar-hide pb-6 px-4 md:px-0">
+            
+            {# PEHLA PASS: Sab dikhao siwaye 'Chokers' aur 'Perfume' ke #}
+            {% for cat in category_cards %}
+                {% if cat.slug != 'perfume' and cat.name|lower != 'perfume' and cat.slug != 'chokers' and cat.name|lower != 'chokers' %}
+                <div class="min-w-[44%] md:min-w-0 snap-start md:snap-align-none">
+                    <a href="{% url 'catalog:product_list' %}?category={{ cat.slug }}" class="group block no-underline">
+                        <div class="relative overflow-hidden bg-gray-50 aspect-[3/4] mb-3">
+                            {% if cat.image %}
+                            <img src="{{ cat.image.url }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="{{ cat.name }}">
+                            {% else %}
+                            <div class="w-full h-full flex items-center justify-center text-[9px] text-gray-300 uppercase">No image</div>
+                            {% endif %}
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500"></div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-[10px] md:text-sm uppercase tracking-wide text-gray-800 font-normal truncate pr-1">{{ cat.name }}</h3>
+                            <div class="hidden md:block opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300 text-gray-400">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="w-full h-[1px] bg-gray-100 mt-2 relative overflow-hidden">
+                            <div class="absolute inset-0 bg-gray-300 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out"></div>
+                        </div>
+                    </a>
+                </div>
+                {% endif %}
+            {% endfor %}
+
+            {# DOOSRA PASS: Sirf 'Chokers' dikhao taaki wo hamesha last mein aaye #}
+            {% for cat in category_cards %}
+                {% if cat.slug == 'chokers' or cat.name|lower == 'chokers' %}
+                <div class="min-w-[44%] md:min-w-0 snap-start md:snap-align-none">
+                    <a href="{% url 'catalog:product_list' %}?category={{ cat.slug }}" class="group block no-underline">
+                        <div class="relative overflow-hidden bg-gray-50 aspect-[3/4] mb-3">
+                            {% if cat.image %}
+                            <img src="{{ cat.image.url }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="{{ cat.name }}">
+                            {% else %}
+                            <div class="w-full h-full flex items-center justify-center text-[9px] text-gray-300 uppercase">No image</div>
+                            {% endif %}
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500"></div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-[10px] md:text-sm uppercase tracking-wide text-gray-800 font-normal truncate pr-1">{{ cat.name }}</h3>
+                            <div class="hidden md:block opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300 text-gray-400">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="w-full h-[1px] bg-gray-100 mt-2 relative overflow-hidden">
+                            <div class="absolute inset-0 bg-gray-300 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out"></div>
+                        </div>
+                    </a>
+                </div>
+                {% endif %}
+            {% endfor %}
+            
+            <div class="min-w-[1px] md:hidden"></div>
+        </div>
+
+        <div class="mt-6 md:hidden text-center">
+            <a href="{% url 'catalog:product_list' %}" class="text-[10px] uppercase tracking-widest text-gray-400 border-b border-gray-100 pb-1" style="text-decoration: none;">
+                View All
+            </a>
+        </div>
+    </div>
+</section>
+
+<style>
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+{% endif %}

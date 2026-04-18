@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Payment {% if pending %}Pending{% else %}Failed{% endif %} - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-[#fafafa] py-24 flex items-center">
+    <div class="max-w-xl mx-auto px-6 w-full text-center">
+
+        <div class="bg-white border border-gray-200 shadow-xl p-14">
+
+            {% if pending %}
+            <!-- Pending -->
+            <div class="w-20 h-20 mx-auto mb-8 flex items-center justify-center border-2 border-amber-400 rounded-full">
+                <svg class="w-10 h-10 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <h1 class="text-3xl font-serif font-semibold text-gray-900 mb-4 tracking-tight">Payment Pending</h1>
+            <p class="text-gray-600 font-elegant leading-relaxed mb-2">
+                Your payment is still being processed. We will confirm your order once the payment is complete.
+            </p>
+            {% else %}
+            <!-- Failed -->
+            <div class="w-20 h-20 mx-auto mb-8 flex items-center justify-center border-2 border-red-400 rounded-full">
+                <svg class="w-10 h-10 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </div>
+            <h1 class="text-3xl font-serif font-semibold text-gray-900 mb-4 tracking-tight">Payment Failed</h1>
+            <p class="text-gray-600 font-elegant leading-relaxed mb-2">
+                Your payment could not be completed. No amount has been charged.
+            </p>
+            {% endif %}
+
+            {% if order %}
+            <p class="text-sm text-gray-500 font-elegant mb-10">
+                Order reference: <span class="font-serif text-gray-800">{{ order.order_number }}</span>
+            </p>
+            {% endif %}
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{% url 'catalog:cart_detail' %}"
+                   class="inline-flex items-center justify-center border border-gray-900 text-gray-900 px-8 py-3 uppercase tracking-wider text-sm font-medium hover:bg-gray-900 hover:text-white transition-all duration-300">
+                    Try Again
+                </a>
+                <a href="{% url 'core:home' %}"
+                   class="inline-flex items-center justify-center border border-gray-300 text-gray-600 px-8 py-3 uppercase tracking-wider text-sm font-medium hover:border-gray-900 hover:text-gray-900 transition-all duration-300">
+                    Back to Home
+                </a>
+            </div>
+
+        </div>
+
+        <p class="mt-8 text-sm text-gray-500 font-elegant">
+            Need help? Contact us at
+            <a href="mailto:support@glamyug.com" class="text-gray-800 underline">support@glamyug.com</a>
+        </p>
+
+    </div>
+</div>
+{% endblock %}

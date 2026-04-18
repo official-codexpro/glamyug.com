@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Luxury Slider</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Tenor+Sans&display=swap" rel="stylesheet">
+    
+    <style>
+        body { margin: 0; padding: 0; background-color: #f6f3ef; }
+
+        .luxury-section {
+            padding: 100px 0;
+            overflow: hidden;
+            font-family: 'Tenor Sans', sans-serif;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            color: #5a4b3d;
+            font-family: 'Playfair Display', serif;
+            font-size: 38px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .title-line {
+            width: 60px;
+            height: 1px;
+            background-color: #a78b71;
+            margin: 15px auto 0;
+        }
+
+        /* Swiper Container */
+        .luxurySwiper {
+            width: 100%;
+            padding-top: 50px;
+            padding-bottom: 80px;
+            perspective: 1200px; /* 3D Depth create karne ke liye */
+        }
+
+        /* Base Slide Styles */
+        .luxury-slide {
+            width: 400px;       /* Center Image Width */
+            height: 550px;      /* Center Image Height */
+            position: relative;
+            background: #000;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .luxury-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            opacity: 0.8; /* Sab images pe thoda dark overlay */
+            transition: 0.6s;
+        }
+
+        /* ----- SYMMETRICAL SCALING LOGIC ----- */
+        
+        /* 1. Center Active Slide (Sabse Badi) */
+        .luxurySwiper .swiper-slide-active {
+            z-index: 10;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+        
+        .luxurySwiper .swiper-slide-active img {
+            opacity: 1; /* Center image clear dikhegi */
+        }
+
+        /* 2. Side Slides (Thodi Chhoti aur Dull) */
+        .luxurySwiper .swiper-slide-next,
+        .luxurySwiper .swiper-slide-prev {
+            opacity: 0.7;
+            z-index: 5;
+        }
+
+        /* 3. Corner/Far Slides (Sabse Dull aur Chhoti) */
+        .luxurySwiper .swiper-slide:not(.swiper-slide-active):not(.swiper-slide-next):not(.swiper-slide-prev) {
+            opacity: 0.2;
+            z-index: 1;
+        }
+
+        /* Label styling (Center image par text) */
+        .active-label {
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #fff;
+            font-size: 16px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 0.5s ease 0.3s;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .luxurySwiper .swiper-slide-active .active-label {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Navigation Arrows */
+        .swiper-button-next, .swiper-button-prev {
+            color: #a78b71 !important;
+            top: 55% !important;
+            transition: 0.3s;
+        }
+        
+        .swiper-button-next:after, .swiper-button-prev:after {
+            font-size: 30px !important;
+        }
+
+        .swiper-button-next:hover, .swiper-button-prev:hover {
+            color: #5a4b3d !important;
+        }
+
+        @media (max-width: 768px) {
+            .luxury-slide { width: 280px; height: 400px; }
+            .section-title { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="luxury-section">
+        <div class="section-header">
+            <h2 class="section-title">The Royal Collection</h2>
+            <div class="title-line"></div>
+        </div>
+
+        <div class="swiper luxurySwiper">
+            <div class="swiper-wrapper">
+                
+                <div class="swiper-slide luxury-slide">
+                    <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=1200" alt="Jewelry 1">
+                    <div class="active-label">Vintage Gold</div>
+                </div>
+                
+                <div class="swiper-slide luxury-slide">
+                    <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=1200" alt="Jewelry 2">
+                    <div class="active-label">Diamond Grace</div>
+                </div>
+                
+                <div class="swiper-slide luxury-slide">
+                    <img src="https://images.unsplash.com/photo-1617038220319-276d3cfab638?q=80&w=1200" alt="Jewelry 3">
+                    <div class="active-label">Emerald Luxe</div>
+                </div>
+                
+                <div class="swiper-slide luxury-slide">
+                    <img src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?q=80&w=1200" alt="Jewelry 4">
+                    <div class="active-label">Pearl Heritage</div>
+                </div>
+                
+                <div class="swiper-slide luxury-slide">
+                    <img src="https://images.unsplash.com/photo-1605100804763-247f67b3f076?q=80&w=1200" alt="Jewelry 5">
+                    <div class="active-label">Sapphire Dream</div>
+                </div>
+
+                <div class="swiper-slide luxury-slide">
+                    <img src="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=1200" alt="Jewelry 6">
+                    <div class="active-label">Ruby Classic</div>
+                </div>
+                
+            </div>
+            
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+const swiper = new Swiper(".luxurySwiper", {
+    loop: false, //
+
+    centeredSlides: true,
+    slidesPerView: "auto",
+    grabCursor: true,
+
+    speed: 1200,
+
+    autoplay: {
+        delay: 2500,
+        disableOnInteraction: false,
+    },
+
+    effect: "coverflow",
+    coverflowEffect: {
+        rotate: 25,
+        stretch: -20,
+        depth: 400,
+        modifier: 1,
+        slideShadows: false,
+    },
+
+    navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+    },
+
+    on: {
+        init: function () {
+            this.update();
+        },
+
+        slideChangeTransitionEnd: function () {
+            const swiper = this;
+
+            // 👉 agar last slide pe hai
+            if (swiper.activeIndex >= swiper.slides.length - 2) {
+
+                // first slide ko last me move karo
+                const firstSlide = swiper.slides[0];
+                swiper.wrapperEl.appendChild(firstSlide);
+
+                swiper.updateSlides();
+
+                // position fix karo (jump avoid)
+                swiper.slideTo(swiper.activeIndex - 1, 0);
+            }
+
+            // 👉 agar first side pe hai (reverse case)
+            if (swiper.activeIndex <= 1) {
+
+                const slides = swiper.slides;
+                const lastSlide = slides[slides.length - 1];
+
+                swiper.wrapperEl.insertBefore(lastSlide, slides[0]);
+
+                swiper.updateSlides();
+
+                swiper.slideTo(swiper.activeIndex + 1, 0);
+            }
+        }
+    }
+});
+</script>
+<style>
+    .swiper-wrapper {
+    transition-timing-function: ease-in-out;
+}
+</style>
+</body>
+</html>

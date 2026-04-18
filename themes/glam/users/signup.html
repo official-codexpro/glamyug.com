@@ -1,0 +1,350 @@
+{% extends "base.html" %}
+
+{% block title %}Join Glam - Exclusive Membership - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-white py-16 px-4 sm:px-6 lg:px-8 lg:py-64">
+
+    <div class="max-w-lg w-full space-y-10">
+
+        <!-- Header -->
+        <div class="text-center">
+            <h2 class="text-3xl sm:text-4xl font-serif text-gray-900 mb-4">
+                Create Your Account
+            </h2>
+            <p class="text-gray-600 font-elegant text-lg leading-relaxed max-w-md mx-auto">
+                Join our refined community and explore timeless Jewellery collections.
+            </p>
+        </div>
+
+        <!-- Signup Card -->
+        <div class="bg-white border border-gray-200 rounded-2xl p-8 sm:p-10">
+
+            {% if form.errors %}
+                <div class="bg-red-50 border border-red-200 rounded-xl p-5 mb-6">
+                    <div class="flex items-start gap-3">
+                        <svg class="h-5 w-5 text-red-500 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                        </svg>
+                        <div>
+                            <h3 class="text-sm font-serif text-red-800">
+                                Registration Issue
+                            </h3>
+                            <div class="mt-1 text-sm text-red-700 font-elegant">
+                                {{ form.errors }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+           <form method="post" class="space-y-6">
+    {% csrf_token %}
+
+    <!-- Name Fields -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+            <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-serif text-gray-800 mb-2">
+                First Name
+            </label>
+            <input type="text"
+                   name="{{ form.first_name.name }}"
+                   id="{{ form.first_name.id_for_label }}"
+                   class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-primary-500 focus:ring-0 outline-none transition-all duration-300 font-elegant text-gray-800 placeholder-gray-400"
+                   placeholder="Your first name"
+                   required>
+        </div>
+
+        <div>
+            <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-serif text-gray-800 mb-2">
+                Last Name
+            </label>
+            <input type="text"
+                   name="{{ form.last_name.name }}"
+                   id="{{ form.last_name.id_for_label }}"
+                   class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-primary-500 focus:ring-0 outline-none transition-all duration-300 font-elegant text-gray-800 placeholder-gray-400"
+                   placeholder="Your last name"
+                   required>
+        </div>
+    </div>
+
+    <!-- Username -->
+    <div>
+        <label for="{{ form.username.id_for_label }}" class="block text-sm font-serif text-gray-800 mb-2">
+            Username
+        </label>
+        <input type="text"
+               name="{{ form.username.name }}"
+               id="{{ form.username.id_for_label }}"
+               class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-primary-500 focus:ring-0 outline-none transition-all duration-300 font-elegant text-gray-800 placeholder-gray-400"
+               placeholder="Choose a unique username"
+               required>
+    </div>
+
+    <!-- Email -->
+    <div>
+        <label for="{{ form.email.id_for_label }}" class="block text-sm font-serif text-gray-800 mb-2">
+            Email Address
+        </label>
+        <input type="email"
+               name="{{ form.email.name }}"
+               id="{{ form.email.id_for_label }}"
+               class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-primary-500 focus:ring-0 outline-none transition-all duration-300 font-elegant text-gray-800 placeholder-gray-400"
+               placeholder="your.email@example.com"
+               required>
+    </div>
+
+    <!-- Password Fields -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+            <label for="{{ form.password1.id_for_label }}" class="block text-sm font-serif text-gray-800 mb-2">
+                Password
+            </label>
+            <input type="password"
+                   name="{{ form.password1.name }}"
+                   id="{{ form.password1.id_for_label }}"
+                   class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-primary-500 focus:ring-0 outline-none transition-all duration-300 font-elegant text-gray-800 placeholder-gray-400"
+                   placeholder="Create secure password"
+                   required>
+        </div>
+
+        <div>
+            <label for="{{ form.password2.id_for_label }}" class="block text-sm font-serif text-gray-800 mb-2">
+                Confirm Password
+            </label>
+            <input type="password"
+                   name="{{ form.password2.name }}"
+                   id="{{ form.password2.id_for_label }}"
+                   class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-primary-500 focus:ring-0 outline-none transition-all duration-300 font-elegant text-gray-800 placeholder-gray-400"
+                   placeholder="Confirm password"
+                   required>
+        </div>
+    </div>
+
+    <!-- Terms -->
+    <div class="flex items-start gap-3 text-sm">
+        <input id="terms"
+               name="terms"
+               type="checkbox"
+               class="mt-1 h-4 w-4 text-primary-500 border-gray-300 focus:ring-0"
+               required>
+        <label for="terms" class="text-gray-700 font-elegant leading-relaxed">
+            I agree to the 
+            <a href="#" class="font-serif text-primary-500 hover:text-black transition-colors duration-300">
+                Terms of Service
+            </a>
+            and 
+            <a href="#" class="font-serif text-primary-500 hover:text-black transition-colors duration-300">
+                Privacy Policy
+            </a>.
+        </label>
+    </div>
+
+    <!-- Create Account Button -->
+    <button type="submit"
+            class="w-full bg-primary-500 text-white py-2.5 uppercase tracking-[0.2em] font-sans font-semibold hover:bg-black transition-all duration-300">
+        Create Account
+    </button>
+</form>
+
+            <!-- Divider -->
+<div class="mt-10">
+    <div class="relative">
+        <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-200"></div>
+        </div>
+        <div class="relative flex justify-center">
+            <span class="px-4 bg-white text-sm text-gray-500 font-elegant">
+                Already part of our community?
+            </span>
+        </div>
+    </div>
+
+    <!-- Sign In Button -->
+    <div class="mt-8">
+        <a href="{% url 'users:login' %}"
+           class="w-full flex justify-center items-center py-2.5 border border-gray-200 text-gray-800 font-sans font-semibold uppercase tracking-[0.2em] hover:border-primary-500 hover:text-primary-500 transition-all duration-300">
+            Sign In
+        </a>
+    </div>
+</div>
+</div>
+        <!-- Member Benefits -->
+<div class="text-center mt-12">
+    <h3 class="text-lg font-serif text-gray-900 mb-8">
+        Exclusive Member Benefits
+    </h3>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-10">
+
+        <div class="flex flex-col items-center">
+            <svg class="w-6 h-6 text-primary-500 mb-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+            <p class="text-sm font-serif text-gray-900 tracking-wide">
+                Complimentary VIP Membership
+            </p>
+        </div>
+
+        <div class="flex flex-col items-center">
+            <svg class="w-6 h-6 text-primary-500 mb-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+            </svg>
+            <p class="text-sm font-serif text-gray-900 tracking-wide">
+                Protected Personal Data
+            </p>
+        </div>
+
+        <div class="flex flex-col items-center">
+            <svg class="w-6 h-6 text-primary-500 mb-4" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <p class="text-sm font-serif text-gray-900 tracking-wide">
+                Personal Jewellery Concierge
+            </p>
+        </div>
+
+    </div>
+</div>
+       <!-- Additional Benefits -->
+<div class="border border-gray-200 p-8">
+    <h4 class="text-lg font-serif text-gray-900 mb-6 text-center">
+        What You’ll Receive
+    </h4>
+
+    <div class="space-y-4 max-w-xl mx-auto">
+
+        <div class="flex items-start">
+            <svg class="w-4 h-4 text-primary-500 mt-1 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+            <p class="text-sm font-elegant text-gray-700 leading-relaxed">
+                Early access to new collections and limited editions
+            </p>
+        </div>
+
+        <div class="flex items-start">
+            <svg class="w-4 h-4 text-primary-500 mt-1 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+            <p class="text-sm font-elegant text-gray-700 leading-relaxed">
+                Exclusive member pricing and private offers
+            </p>
+        </div>
+
+        <div class="flex items-start">
+            <svg class="w-4 h-4 text-primary-500 mt-1 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+            <p class="text-sm font-elegant text-gray-700 leading-relaxed">
+                Complimentary Jewellery care and maintenance services
+            </p>
+        </div>
+
+    </div>
+</div>
+</div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Password visibility toggles
+    const togglePassword1 = document.getElementById('toggle-password1');
+    const togglePassword2 = document.getElementById('toggle-password2');
+    const passwordField1 = document.getElementById('{{ form.password1.id_for_label }}');
+    const passwordField2 = document.getElementById('{{ form.password2.id_for_label }}');
+
+    function setupPasswordToggle(toggleBtn, passwordField) {
+        if (toggleBtn && passwordField) {
+            toggleBtn.addEventListener('click', function() {
+                const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordField.setAttribute('type', type);
+
+                // Update icon
+                this.innerHTML = type === 'password' ?
+                    '<svg class="h-6 w-6 text-gray-400 group-hover:text-primary-500 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>' :
+                    '<svg class="h-6 w-6 text-gray-400 group-hover:text-primary-500 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>';
+            });
+        }
+    }
+
+    setupPasswordToggle(togglePassword1, passwordField1);
+    setupPasswordToggle(togglePassword2, passwordField2);
+
+    // Form field animations
+    const formFields = document.querySelectorAll('input[type="text"], input[type="email"], input[type="password"]');
+    formFields.forEach(field => {
+        field.addEventListener('focus', function() {
+            this.parentNode.parentNode.classList.add('field-focused');
+        });
+
+        field.addEventListener('blur', function() {
+            this.parentNode.parentNode.classList.remove('field-focused');
+        });
+    });
+
+    // Password strength indicator (basic)
+    const password1 = document.getElementById('{{ form.password1.id_for_label }}');
+    if (password1) {
+        password1.addEventListener('input', function() {
+            const strength = getPasswordStrength(this.value);
+            updatePasswordStrengthIndicator(strength);
+        });
+    }
+
+    function getPasswordStrength(password) {
+        let strength = 0;
+        if (password.length >= 8) strength++;
+        if (/[a-z]/.test(password)) strength++;
+        if (/[A-Z]/.test(password)) strength++;
+        if (/[0-9]/.test(password)) strength++;
+        if (/[^a-zA-Z0-9]/.test(password)) strength++;
+        return strength;
+    }
+
+    function updatePasswordStrengthIndicator(strength) {
+        // You can add visual password strength indicator here
+        // For now, just change the border color
+        const password1 = document.getElementById('{{ form.password1.id_for_label }}');
+        if (password1) {
+            if (strength >= 4) {
+                password1.style.borderColor = '#10b981'; // green
+            } else if (strength >= 2) {
+                password1.style.borderColor = '#f59e0b'; // yellow
+            } else {
+                password1.style.borderColor = '#ef4444'; // red
+            }
+        }
+    }
+
+    // Add elegant hover effects to form elements
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px)';
+        });
+        form.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    }
+});
+</script>
+
+<style>
+.field-focused {
+    transform: translateY(-2px);
+    transition: transform 0.3s ease;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+
+.animate-shimmer {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 3s infinite;
+}
+</style>
+{% endblock %}
